@@ -134,6 +134,68 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .card p{margin:0;font-size:15px;line-height:1.55;color:var(--muted)}
 .enter{justify-self:start;margin-top:6px;border:0;border-radius:999px;background:var(--accent);color:var(--accent-ink);padding:13px 26px;font-weight:600;font-size:16px}
 .card .small{font-size:12.5px}
+.bur{position:fixed;inset:0;z-index:22;background:radial-gradient(120% 90% at 50% 25%,#2b5e47,#173a2c 70%,#10281f);color:#f4efe6;overflow:auto;-webkit-overflow-scrolling:touch;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 12px) max(16px,env(safe-area-inset-left,0px))}
+.bur-in{max-width:980px;margin:0 auto;display:grid;gap:12px;--cw:clamp(40px,7.2vw,60px);--mw:clamp(24px,4vw,34px)}
+.bur-grid{display:grid;gap:12px;min-width:0}
+.bur-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bur-title{font-family:var(--font-display);font-size:32px;line-height:1}
+.bur-score{display:block;margin-top:4px;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#cfe3d6;font-variant-numeric:tabular-nums}
+.bur .btn{border-color:#f4efe6;color:#f4efe6}
+.bur .btn.primary{background:#f4efe6;color:#1c1a1e}
+.bur .btn.accent{background:#f2c46b;border-color:#f2c46b;color:#3a2a0c}
+.zone{background:rgba(0,0,0,.18);border-radius:10px;padding:10px 12px;display:grid;gap:8px;min-width:0}
+.zone-h{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;min-width:0}
+.zone-h strong{font-size:15px;font-weight:600}
+.meta{font-size:12.5px;color:#cfe3d6}
+.ofan{display:inline-flex;margin-left:auto;padding-left:calc(var(--mw)*.66)}
+.ofan .card{margin-left:calc(var(--mw)*-.66)}
+.melds{display:flex;flex-wrap:wrap;gap:8px 10px;min-height:calc(var(--mw)*1.42)}
+.meld{display:inline-flex;flex-direction:column;align-items:flex-start;gap:4px;background:transparent;border:1.5px solid transparent;border-radius:8px;padding:4px 6px 4px 4px;color:inherit;font:inherit;max-width:100%}
+button.meld{cursor:pointer;border-color:rgba(255,255,255,.2)}
+button.meld.can{border-color:#f2c46b;box-shadow:0 0 0 3px rgba(242,196,107,.3)}
+.mrow{display:inline-flex;flex-wrap:wrap;padding-left:calc(var(--mw)*.58)}
+.mrow .card{margin-left:calc(var(--mw)*-.58)}
+.tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px}
+.tag.clean{background:#f2c46b;color:#3a2a0c}.tag.dirty{background:rgba(255,255,255,.22)}
+.empty{margin:0;font-size:13px;color:#a9c7b6;align-self:center}
+.mid{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}
+.pile{border:0;background:rgba(0,0,0,.18);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;color:#f4efe6;font:inherit;font-size:12px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
+.pile:disabled{opacity:.6;cursor:default}
+.pile:not(:disabled){box-shadow:0 0 0 2px #f2c46b}
+.pile.disc{flex:1;min-width:0;align-items:flex-start}
+.drow{display:flex;flex-wrap:wrap;padding-left:calc(var(--mw)*.52)}
+.drow .card{margin-left:calc(var(--mw)*-.52)}
+.poz{font-size:12.5px;color:#cfe3d6;align-self:center}
+.bur-msg{margin:0;font-size:14.5px;line-height:1.45;background:rgba(255,255,255,.09);border-radius:8px;padding:9px 12px}
+.bur-msg.err{background:#7d2236;color:#fff}
+.hand{display:flex;flex-wrap:wrap;gap:8px 0;padding:14px 0 0 calc(var(--cw)*.3)}
+.hc{border:0;padding:0;background:none;margin-left:calc(var(--cw)*-.3);transition:transform .12s;border-radius:7px;cursor:pointer;font:inherit}
+.hc[aria-pressed="true"]{transform:translateY(-12px)}
+.hc[aria-pressed="true"] .card{box-shadow:0 0 0 3px #f2c46b,0 6px 14px rgba(0,0,0,.35)}
+.hc.locked .card{outline:2px dashed rgba(125,34,54,.75);outline-offset:-5px}
+.card{position:relative;display:inline-flex;flex-direction:column;align-items:flex-start;box-sizing:border-box;width:var(--cw);height:calc(var(--cw)*1.42);background:#fbf8f1;border-radius:7px;border:1px solid rgba(0,0,0,.28);padding:4px 5px;box-shadow:0 2px 4px rgba(0,0,0,.28);font-family:var(--font-body);line-height:1;flex:none}
+.card b{font-size:calc(var(--cw)*.36);font-weight:600}
+.card i{font-style:normal;font-size:calc(var(--cw)*.4);margin-top:2px}
+.card.red{color:#b3202f}.card.blk{color:#1c1a1e}
+.card.joker{color:#7d2236}.card.joker i{font-size:calc(var(--cw)*.17);font-weight:600;letter-spacing:.04em;margin-top:auto}
+.card.mini{width:var(--mw);height:calc(var(--mw)*1.42);padding:2px 3px;border-radius:5px}
+.card.mini b{font-size:calc(var(--mw)*.38)}.card.mini i{font-size:calc(var(--mw)*.4)}
+.card.mini.joker i{display:none}
+.card.back{background:#7d2236 repeating-linear-gradient(45deg,rgba(255,255,255,.13) 0 3px,transparent 3px 8px);border:2px solid #fbf8f1}
+.bur-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:sticky;bottom:calc(env(safe-area-inset-bottom,0px)*-1);padding-block:12px 4px;background:linear-gradient(to top,#10281f 75%,rgba(16,40,31,0))}
+.over{background:#f4efe6;color:var(--ink);border-radius:10px;padding:20px;display:grid;gap:14px;max-width:560px}
+.over h3{margin:0;font-family:var(--font-display);font-weight:400;font-size:32px;line-height:1.1;text-wrap:balance}
+.over .lead{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+.over .btn{border-color:var(--ink);color:var(--ink)}.over .btn.primary{background:var(--ink);color:var(--paper)}
+#b-over-body{display:grid;gap:12px}
+.res{border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;width:100%}
+.res th,.res td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line)}
+.res th:first-child{text-align:left;font-weight:400;color:var(--muted)}
+.res tr:first-child th{font-weight:600;color:var(--ink)}
+.res tr.sum th,.res tr.sum td{font-weight:600;color:var(--ink)}
+.rules summary{cursor:pointer;font-weight:600}
+.rules p{margin:6px 0 0;font-size:14px;line-height:1.5;color:var(--muted)}
 .login{z-index:25}
 .sheet.narrow{max-width:400px}
 .ltitle{margin:0;font-family:var(--font-display);font-weight:400;font-size:30px;line-height:1.1}
@@ -152,7 +214,7 @@ body{font-size:14px}
 <div id="app"></div>
 
 <header class="hud-top">
-  <div class="label"><span class="label-title">La nostra camera</span><span class="label-sub" id="hud-sub">7 ricordi</span></div>
+  <div class="label"><span class="label-title">La nostra camera</span><span class="label-sub" id="hud-sub">16 ricordi</span></div>
   <div class="hud-btns">
     <button id="dress-open" class="pill light" type="button" aria-label="Apri il camerino">
       <span>Camerino</span>
@@ -201,13 +263,48 @@ body{font-size:14px}
     <h2 id="d-title">Camerino</h2>
     <div class="tabs" role="tablist" aria-label="Personaggio">
       <button class="tab" role="tab" id="tab-lui" type="button">Davide</button>
-      <button class="tab" role="tab" id="tab-lei" type="button">Lei</button>
+      <button class="tab" role="tab" id="tab-lei" type="button">Terry</button>
     </div>
     <button class="btn primary push" id="d-done" type="button">Fatto</button>
   </div>
   <div class="dress-body" id="d-body"></div>
   <div class="dress-status"><span id="d-status" role="status"></span><button class="btn small" id="d-auth" type="button" hidden>Accedi</button></div>
 </aside>
+
+<div id="bur" class="bur" hidden>
+  <div class="bur-in">
+    <header class="bur-head">
+      <div><div class="bur-title">Burraco</div><span class="bur-score" id="b-score"></span></div>
+      <button class="btn push" id="b-close" type="button">Torna nella stanza</button>
+    </header>
+    <div id="b-table" class="bur-grid">
+      <section class="zone"><div class="zone-h" id="b-opp"></div><div class="melds" id="b-opp-melds"></div></section>
+      <section class="mid">
+        <button class="pile" id="b-stock" type="button"><span class="card back"></span><span>Mazzo · <span id="b-stock-n"></span></span></button>
+        <button class="pile disc" id="b-disc" type="button"><span id="b-disc-n">Scarti</span><span class="drow" id="b-disc-row"></span></button>
+        <span class="poz" id="b-poz"></span>
+      </section>
+      <p class="bur-msg" id="b-msg" role="status"></p>
+      <section class="zone"><div class="zone-h"><strong id="b-me"></strong></div><div class="melds" id="b-my-melds"></div></section>
+      <section class="hand" id="b-hand" aria-label="La tua mano"></section>
+      <div class="bur-actions">
+        <button class="btn" id="b-sort" type="button">Ordina per valore</button>
+        <button class="btn" id="b-clear" type="button" hidden>Deseleziona</button>
+        <button class="btn primary push" id="b-meld" type="button">Cala</button>
+        <button class="btn accent" id="b-discard" type="button">Scarta</button>
+      </div>
+    </div>
+    <div id="b-over" hidden><div class="over"><div id="b-over-body"></div><div class="actions"><button class="btn primary" id="b-new" type="button">Inizia la partita</button></div></div></div>
+  </div>
+</div>
+
+<div id="chi" class="viewer login" hidden>
+  <div class="sheet narrow" role="dialog" aria-modal="true" aria-labelledby="chi-t">
+    <h2 class="ltitle" id="chi-t">Chi sei?</h2>
+    <p class="lsub">Scegli il tuo personaggio. Con questo account muoverai sempre lui, da qualsiasi dispositivo.</p>
+    <div class="actions"><button class="btn primary" id="chi-lui" type="button">Davide</button><button class="btn accent" id="chi-lei" type="button">Terry</button></div>
+  </div>
+</div>
 
 <div id="login" class="viewer login" hidden>
   <form class="sheet narrow" id="login-form" role="dialog" aria-modal="true" aria-labelledby="l-title">
@@ -224,7 +321,7 @@ body{font-size:14px}
   <div class="card">
     <p class="eyebrow">Un posto solo nostro</p>
     <h1>La nostra camera</h1>
-    <p>Il camino è acceso, fuori nevica. Camminate insieme per la stanza e avvicinatevi alle cornici per rivedere i vostri ricordi.</p>
+    <p>Il camino è acceso, fuori nevica. Camminate per la stanza, avvicinatevi alle cornici per rivedere i vostri ricordi e sedetevi al tavolino per una partita a burraco.</p>
     <button id="enter" class="enter" type="button">Entra</button>
     <p class="small" id="start-hint">Sul telefono: levetta in basso a sinistra per camminare, trascina col dito per girare la visuale.</p>
   </div>
@@ -234,6 +331,7 @@ body{font-size:14px}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
 (function(){
 'use strict';
@@ -244,7 +342,8 @@ const FIREBASE_CONFIG={
   projectId:'museo-aecd4',
   storageBucket:'museo-aecd4.firebasestorage.app',
   messagingSenderId:'813902311757',
-  appId:'1:813902311757:web:3b46471d6733f77aa44704'
+  appId:'1:813902311757:web:3b46471d6733f77aa44704',
+  databaseURL:'https://museo-aecd4-default-rtdb.europe-west1.firebasedatabase.app'
 };
 const T_EMPTY='Questa cornice aspetta una vostra foto e il ricordo che la accompagna.';
 // ---- the seven slots; db rows opere/n1..n7 override title, sub, text and photo ----
@@ -256,7 +355,16 @@ const OPERE=[
   {kind:'wall',pos:[0,2.2,FBZ+.4+.012],ry:0,maxW:.95,maxH:.8,shape:'l',style:'walnut',spot:[0,-2.95],def:{title:'Noi due',sub:'Foto in arrivo',text:T_EMPTY}},
   {kind:'wall',pos:[-HW+.012,1.86,.8],ry:Math.PI/2,maxW:1.05,maxH:.6,shape:'l',style:'white',spot:[-1.75,.8],def:{title:'Una sera qualunque',sub:'Foto in arrivo',text:T_EMPTY}},
   {kind:'stand',pos:[HW-.24,.9,1.12],ry:-1.75,maxW:.26,maxH:.26,shape:'p',style:'gold',spot:[3.2,1.1],def:{title:'Il nostro posto',sub:'Foto in arrivo',text:T_EMPTY}},
-  {kind:'wall',pos:[HW-.012,1.88,1.7],ry:-Math.PI/2,maxW:.62,maxH:.75,shape:'p',style:'walnut',spot:[3.0,1.9],def:{title:'La prossima foto',sub:'Ancora da scattare',text:'Lo spazio per il prossimo ricordo, quello che non avete ancora vissuto.'}}
+  {kind:'wall',pos:[HW-.012,1.88,1.7],ry:-Math.PI/2,maxW:.62,maxH:.75,shape:'p',style:'walnut',spot:[3.0,1.9],def:{title:'La prossima foto',sub:'Ancora da scattare',text:'Lo spazio per il prossimo ricordo, quello che non avete ancora vissuto.'}},
+  {kind:'wall',pos:[-2.15,1.78,FBZ+.012],ry:0,maxW:.42,maxH:.56,shape:'p',style:'gold',spot:[-2.6,-3.3],def:{title:'Il nostro selfie',sub:'Foto in arrivo',text:T_EMPTY}},
+  {kind:'wall',pos:[-3.1,2.12,FBZ+.012],ry:0,maxW:.6,maxH:.42,shape:'l',style:'walnut',spot:[-3.1,-3.25],def:{title:'Al mare',sub:'Foto in arrivo',text:T_EMPTY}},
+  {kind:'wall',pos:[-3.25,1.45,FBZ+.012],ry:0,maxW:.3,maxH:.3,shape:'p',style:'white',spot:[-3.4,-3.6],def:{title:'Una passeggiata',sub:'Foto in arrivo',text:T_EMPTY}},
+  {kind:'wall',pos:[2.15,1.85,FBZ+.012],ry:0,maxW:.62,maxH:.44,shape:'l',style:'white',spot:[2.6,-3.3],def:{title:'Una cena speciale',sub:'Foto in arrivo',text:T_EMPTY}},
+  {kind:'wall',pos:[3.05,1.9,FBZ+.012],ry:0,maxW:.4,maxH:.54,shape:'p',style:'walnut',spot:[3.05,-3.0],def:{title:'Le risate',sub:'Foto in arrivo',text:T_EMPTY}},
+  {kind:'wall',pos:[2.2,1.3,FBZ+.012],ry:0,maxW:.3,maxH:.24,shape:'l',style:'gold',spot:[2.35,-3.6],def:{title:'Un sabato sera',sub:'Foto in arrivo',text:T_EMPTY}},
+  {kind:'wall',pos:[0,1.8,HW-.012],ry:Math.PI,maxW:.9,maxH:.6,shape:'l',style:'walnut',spot:[0,3.3],def:{title:'Il primo Natale',sub:'Foto in arrivo',text:T_EMPTY}},
+  {kind:'wall',pos:[-2.4,2.42,HW-.012],ry:Math.PI,maxW:.46,maxH:.32,shape:'l',style:'gold',spot:[-2.0,3.2],def:{title:'La nostra canzone',sub:'Foto in arrivo',text:T_EMPTY}},
+  {kind:'stand',pos:[HW-.13,.825,-1.72],ry:-Math.PI/2,maxW:.2,maxH:.17,shape:'l',style:'white',spot:[3.4,-1.7],def:{title:'Da rifare',sub:'Foto in arrivo',text:T_EMPTY}}
 ];
 OPERE.forEach(o=>{o.spot={x:o.spot[0],z:o.spot[1]};});
 OPERE.forEach(o=>{o.cur={title:o.def.title,sub:o.def.sub,text:o.def.text,img:null};o.token=0;});
@@ -265,7 +373,7 @@ const PAL=[['#d6b3ae','#8e5b68'],['#bccad0','#64808d'],['#dcc6a8','#9c7655'],['#
 // ---- appearance ----
 const DEFAULTS={
   lui:{nome:'Davide',altezza:185,pelle:'#d6a383',capelli:'sfumati',coloreCapelli:'#1c1612',barba:'no',occhiali:'nessuno',labbra:'naturale',outfit:'elegante',giacca:'#252a38',maglia:'#c9d9ea',pantaloni:'#1e222d',brillantini:'no',scarpe:'#141414'},
-  lei:{nome:'Lei',altezza:166,pelle:'#d9a285',capelli:'ricci lunghi',coloreCapelli:'#1c1310',barba:'no',occhiali:'neri',labbra:'bordeaux',outfit:'elegante',giacca:'#18171b',maglia:'#0f0f11',pantaloni:'#151418',brillantini:'si',scarpe:'#111111'}
+  lei:{nome:'Terry',altezza:166,pelle:'#d9a285',capelli:'ricci lunghi',coloreCapelli:'#1c1310',barba:'no',occhiali:'neri',labbra:'bordeaux',outfit:'elegante',giacca:'#18171b',maglia:'#0f0f11',pantaloni:'#151418',brillantini:'si',scarpe:'#111111'}
 };
 const SKIN=['#f2cfb3','#e3b392','#d9a285','#c58c66','#a26a46','#7a4a2e','#553321'];
 const HAIR=['#15100d','#2e1f17','#5a3a24','#8a3f1c','#c9a063','#9a9590'];
@@ -296,6 +404,7 @@ function sanitizeAp(raw,def){
     else if(op.type==='range'){const n=Math.round(Number(v));if(Number.isFinite(n))a[op.key]=Math.max(op.min,Math.min(op.max,n));}
     else if(op.type==='color'){if(typeof v==='string'&&HEX.test(v))a[op.key]=v.toLowerCase();}
     else if(op.o.some(x=>x[0]===v))a[op.key]=v;});
+  if(a.nome==='Lei'&&def.nome==='Terry')a.nome='Terry';
   return a;
 }
 
@@ -616,6 +725,25 @@ const BOXES=[
   [-W/2,BED.z-BED.w/2-.05,BED.x1+.05,BED.z+BED.w/2+.05],[-W/2,-.65,-W/2+.5,-.15],[-W/2,1.75,-W/2+.5,2.25],
   [W/2-.5,.95,W/2,2.45],[W/2-1.0,-D/2,W/2,-D/2+1.0],[-3.2,D/2-.36,-1.6,D/2]
 ];
+// ---- tavolino da gioco con due sedie ----
+const TABLE={x:2.3,z:-.4};
+const SEATS={lui:{x:1.42,z:-.4,a:Math.PI/2},lei:{x:3.18,z:-.4,a:-Math.PI/2}};
+{const g=new THREE.Group();g.position.set(TABLE.x,0,TABLE.z);scene.add(g);
+  const Wd=L(0x6a4630);
+  part(g,cyl(.56,.56,.045,40),Wd,0,.735,0);part(g,cyl(.47,.47,.006,40),L(0x24543f),0,.76,0);
+  part(g,cyl(.05,.07,.66,12),Wd,0,.39,0);part(g,cyl(.28,.32,.05,24),Wd,0,.03,0);
+  const back=L(0x7d2236),face=L(0xf7f3ea);
+  part(g,box(.09,.035,.13),back,-.04,.781,-.15);
+  const d=part(g,box(.09,.004,.13),face,.09,.766,-.13);d.rotation.y=.3;
+  [-1,1].forEach(s=>{for(let i=0;i<7;i++){const c=part(g,box(.065,.003,.095),i===3?back:face,s*.3,.766+i*.0015,(i-3)*.03);c.rotation.y=s*Math.PI/2+(i-3)*.13;}});}
+candle(TABLE.x-.02,.763,TABLE.z+.3,.09);
+function chair(s){const g=new THREE.Group();g.position.set(s.x,0,s.z);g.rotation.y=s.a;scene.add(g);
+  const Wd=L(0x7a5236),cu=L(0x7d2236);
+  [[-.18,-.17],[.18,-.17],[-.18,.17],[.18,.17]].forEach(([p,q])=>part(g,cyl(.02,.017,.45,8),Wd,p,.225,q));
+  part(g,box(.44,.04,.42),Wd,0,.46,0);part(g,box(.4,.04,.37),cu,0,.495,.01);
+  part(g,box(.44,.06,.035),Wd,0,.95,-.2);[-.18,0,.18].forEach(x=>part(g,box(.035,.46,.03),Wd,x,.7,-.2));}
+chair(SEATS.lui);chair(SEATS.lei);
+BOXES.push([1.18,-.98,3.42,.18]);
 
 // ---- photo frames ----
 function fit(a,mw,mh){let w=mw,h=w/a;if(h>mh){h=mh;w=h*a;}return{w,h};}
@@ -857,7 +985,7 @@ function sanitizeOpera(d,def){
   return{title:(t&&t.trim())?t:def.title,sub:str(d.sub,40)??def.sub,text:str(d.text,400)??def.text,
     img:(typeof d.img==='string'&&d.img.length<1100000&&IMG_RE.test(d.img))?d.img:null};
 }
-function refreshAuthUi(){updateEditAffordance();$('hud-sub').textContent='7 ricordi'+(signedIn()?' · accesso fatto':'');const b=$('d-auth');b.hidden=!configured;b.textContent=signedIn()?'Esci':'Accedi';
+function refreshAuthUi(){updateEditAffordance();updateHudSub();const b=$('d-auth');b.hidden=!configured;b.textContent=signedIn()?'Esci':'Accedi';
   if(mode==='dress')setDressStatus(baseDressStatus());}
 function initOnline(){
   try{
@@ -867,7 +995,7 @@ function initOnline(){
   refreshAuthUi();
   if(!configured){$('start-hint').textContent+=' (Salvataggio online non ancora collegato.)';return;}
   auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
-  auth.onAuthStateChanged(()=>refreshAuthUi());
+  auth.onAuthStateChanged(u=>{refreshAuthUi();onUser(u);});
   ['lui','lei'].forEach(who=>{
     fdb.collection('aspetto').doc(who).onSnapshot(snap=>{
       if(!snap.exists||snap.metadata.hasPendingWrites)return;
@@ -877,7 +1005,7 @@ function initOnline(){
     },e=>console.warn('aspetto',e));
   });
   fdb.collection('opere').onSnapshot(q=>{
-    const map={};q.docs.forEach(doc=>{const m=/^n([1-7])$/.exec(doc.id);if(m)map[+m[1]-1]=doc.data();});
+    const map={};q.docs.forEach(doc=>{const m=/^n([0-9]{1,2})$/.exec(doc.id);if(m&&+m[1]>=1&&+m[1]<=OPERE.length)map[+m[1]-1]=doc.data();});
     OPERE.forEach((o,i)=>{
       const next=map[i]?sanitizeOpera(map[i],o.def):{title:o.def.title,sub:o.def.sub,text:o.def.text,img:null};
       if(next.title===o.cur.title&&next.sub===o.cur.sub&&next.text===o.cur.text&&next.img===o.cur.img)return;
@@ -910,11 +1038,13 @@ addEventListener('keydown',e=>{
   const t=e.target;if(t&&t.closest&&t.closest('input,textarea'))return;
   if(!$('login').hidden){if(e.code==='Escape')closeLogin();return;}
   if(viewing>=0){if(editing)return;if(e.code==='Escape')closeViewer();else if(e.code==='ArrowRight')stepViewer(1);else if(e.code==='ArrowLeft')stepViewer(-1);return;}
+  if(!$('chi').hidden)return;
   if(mode==='dress'){if(e.code==='Escape')closeDress();return;}
+  if(mode==='bur'){if(e.code==='Escape')closeBur();return;}
   if(!playing)return;
   keys.add(e.code);
-  if(e.code==='KeyE'&&nearIdx>=0)openViewer(nearIdx);
-  if(e.code==='KeyC')swap();
+  if(e.code==='KeyE'){if(nearIdx>=0)openViewer(nearIdx);else if(nearIdx===-2)openBur();}
+  if(e.code==='KeyC'&&!me)swap();
   if(e.code.startsWith('Arrow')||e.code==='Space')e.preventDefault();
 });
 addEventListener('keyup',e=>keys.delete(e.code));addEventListener('blur',()=>keys.clear());
@@ -936,7 +1066,7 @@ const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
 function pick(e){const r=cv.getBoundingClientRect();ndc.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
   ray.setFromCamera(ndc,camera);const hit=ray.intersectObjects(photoMeshes.filter(Boolean))[0];if(hit&&hit.distance<10)openViewer(hit.object.userData.idx);}
 
-function swap(){[leader,follower]=[follower,leader];refreshNames();
+function swap(){if(me)return;[leader,follower]=[follower,leader];refreshNames();
   if(leader.built)leader.built.tag.material.opacity=1;if(follower.built)follower.built.tag.material.opacity=.7;}
 $('swap').addEventListener('click',swap);
 
@@ -951,11 +1081,11 @@ function closeViewer(){if(editing)stopEdit();viewing=-1;viewer.hidden=true;}
 function stepViewer(d){openViewer((viewing+d+OPERE.length)%OPERE.length);}
 function updateEditAffordance(){$('v-edit').hidden=!signedIn();$('v-login').hidden=!configured||signedIn();$('v-note').hidden=configured;}
 $('v-login').addEventListener('click',()=>openLogin(()=>{if(viewing>=0)startEdit();}));
-$('d-auth').addEventListener('click',()=>{if(!auth)return;if(signedIn()){auth.signOut().then(refreshAuthUi);}else openLogin(()=>scheduleSave(dressWho));});
+$('d-auth').addEventListener('click',()=>{if(!auth)return;if(signedIn()){(presRef?presRef.update({on:false,sit:false}).catch(()=>{}):Promise.resolve()).then(()=>auth.signOut()).then(refreshAuthUi);}else openLogin(()=>scheduleSave(dressWho));});
 $('v-close').addEventListener('click',closeViewer);
 $('v-prev').addEventListener('click',()=>stepViewer(-1));$('v-next').addEventListener('click',()=>stepViewer(1));
 viewer.addEventListener('click',e=>{if(e.target===viewer&&!editing)closeViewer();});
-nearBtn.addEventListener('click',()=>{if(nearIdx>=0)openViewer(nearIdx);});
+nearBtn.addEventListener('click',()=>{if(nearIdx>=0)openViewer(nearIdx);else if(nearIdx===-2)openBur();});
 const fStatus=$('f-status');
 function status(t,err){fStatus.textContent=t;fStatus.classList.toggle('err',!!err);}
 function startEdit(){const o=OPERE[viewing];editing=true;
@@ -1055,6 +1185,363 @@ function applyViewOffset(){const w=innerWidth,h=innerHeight;
   if(mode==='dress'){const r=dressEl.getBoundingClientRect();if(w>=760)camera.setViewOffset(w,h,r.width/2,0,w,h);else camera.setViewOffset(w,h,0,r.height/2,w,h);}
   else camera.clearViewOffset();camera.updateProjectionMatrix();}
 
+// ---- burraco: regole (2 giocatori, 2 mazzi + 4 jolly = 108 carte) ----
+// carta = numero 0..107: 0..103 carte normali (due mazzi), 104..107 jolly
+const BUR={
+  rank:c=>c>=104?0:(c%52)%13+1,          // 1=A … 13=K, 0=jolly
+  suit:c=>c>=104?-1:Math.floor((c%52)/13), // 0 ♠ 1 ♥ 2 ♦ 3 ♣
+  wild:c=>c>=104||((c%52)%13+1)===2,
+  val(c){const r=BUR.rank(c);return c>=104?30:r===2?20:r===1?15:r>=8?10:5;},
+  other:r=>r==='lui'?'lei':'lui'
+};
+function bSeq(cards){
+  if(cards.length<3)return null;
+  const R=BUR.rank,S=BUR.suit;
+  const jok=cards.filter(c=>c>=104),twos=cards.filter(c=>c<104&&R(c)===2),nat=cards.filter(c=>c<104&&R(c)!==2);
+  if(jok.length>1)return null;
+  const suit=nat.length?S(nat[0]):(twos.length?S(twos[0]):-1);
+  if(suit<0||nat.some(c=>S(c)!==suit))return null;
+  let best=null;
+  for(const nt of [null,...twos.filter(c=>S(c)===suit)]){
+    const wild=jok.concat(twos.filter(c=>c!==nt));
+    if(wild.length>1)continue;
+    const items=nat.map(c=>({c,r:R(c)}));if(nt!=null)items.push({c:nt,r:2});
+    const aces=items.filter(o=>o.r===1).length;if(aces>1)continue;
+    for(const high of aces?[false,true]:[false]){
+      const its=items.map(o=>({c:o.c,r:o.r===1&&high?14:o.r})).sort((a,b)=>a.r-b.r);
+      let dup=false;for(let i=1;i<its.length;i++)if(its[i].r===its[i-1].r)dup=true;
+      if(dup)continue;
+      const min=its[0].r,max=its[its.length-1].r,gaps=(max-min+1)-its.length;
+      if(gaps>wild.length)continue;
+      const order=[];
+      for(let r=min,k=0;r<=max;r++){if(k<its.length&&its[k].r===r){order.push(its[k].c);k++;}else order.push(wild[0]);}
+      if(wild.length===1&&gaps===0){
+        if(max<14)order.push(wild[0]);else if(min>1)order.unshift(wild[0]);else continue;
+      }
+      const res={t:'seq',c:order,d:wild.length>0};
+      if(!best||(best.d&&!res.d))best=res;
+    }
+  }
+  return best;
+}
+function bSet(cards){
+  if(cards.length<3)return null;
+  const wild=cards.filter(BUR.wild),nat=cards.filter(c=>!BUR.wild(c));
+  if(wild.length>1||nat.length<2)return null;
+  const r=BUR.rank(nat[0]);if(nat.some(c=>BUR.rank(c)!==r))return null;
+  return{t:'set',c:nat.slice().sort((a,b)=>BUR.suit(a)-BUR.suit(b)).concat(wild),d:wild.length>0};
+}
+function bAnalyze(cards,t){return t==='seq'?bSeq(cards):t==='set'?bSet(cards):(bSeq(cards)||bSet(cards));}
+const bHasBurraco=melds=>melds.some(m=>m.c.length>=7);
+function bShuffle(){const a=[];for(let i=0;i<108;i++)a.push(i);
+  const rnd=new Uint32Array(108);(window.crypto||{getRandomValues:x=>{for(let i=0;i<x.length;i++)x[i]=Math.random()*4294967296;return x;}}).getRandomValues(rnd);
+  for(let i=a.length-1;i>0;i--){const j=rnd[i]%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function bNewHand(prev){
+  const d=bShuffle(),first=prev?BUR.other(prev.first||'lui'):'lui';
+  const newMatch=!prev||!!prev.winner;
+  return{v:1,status:'playing',hand:newMatch?1:(prev.hand||0)+1,first,turn:first,phase:'draw',
+    hands:{lui:d.slice(0,11),lei:d.slice(11,22)},pozzetti:[d.slice(22,33),d.slice(33,44)],discard:[d[44]],stock:d.slice(45),
+    melds:{lui:[],lei:[]},pozTaken:{lui:false,lei:false},lock:-1,
+    scores:newMatch?{lui:0,lei:0}:{lui:prev.scores.lui,lei:prev.scores.lei},
+    last:{who:'',txt:'Carte distribuite.'},result:null,winner:null};
+}
+function bNorm(v){
+  const arr=x=>Array.isArray(x)?x.filter(c=>c!=null):(x&&typeof x==='object'?Object.keys(x).sort((a,b)=>a-b).map(k=>x[k]).filter(c=>c!=null):[]);
+  const st=JSON.parse(JSON.stringify(v||{}));
+  st.stock=arr(st.stock).map(Number);st.discard=arr(st.discard).map(Number);st.pozzetti=arr(st.pozzetti).map(p=>arr(p).map(Number)).filter(p=>p.length);
+  const H=st.hands||{},M=st.melds||{},P=st.pozTaken||{},S=st.scores||{};
+  st.hands={lui:arr(H.lui).map(Number),lei:arr(H.lei).map(Number)};
+  const mm=x=>arr(x).map(m=>({t:m.t==='set'?'set':'seq',c:arr(m.c).map(Number),d:!!m.d})).filter(m=>m.c.length);
+  st.melds={lui:mm(M.lui),lei:mm(M.lei)};
+  st.pozTaken={lui:!!P.lui,lei:!!P.lei};
+  st.scores={lui:+S.lui||0,lei:+S.lei||0};
+  st.lock=st.lock==null?-1:+st.lock;
+  st.phase=st.phase==='play'?'play':'draw';st.turn=st.turn==='lei'?'lei':'lui';
+  st.last=st.last||{who:'',txt:''};st.result=st.result||null;st.winner=st.winner||null;
+  return st;
+}
+function bScore(st,role,closer){
+  const melds=st.melds[role],hand=st.hands[role];
+  const table=melds.reduce((s,m)=>s+m.c.reduce((a,c)=>a+BUR.val(c),0),0);
+  const bonus=melds.reduce((s,m)=>s+(m.c.length>=7?(m.d?100:200):0),0);
+  const close=closer===role?100:0,inHand=hand.reduce((a,c)=>a+BUR.val(c),0),poz=st.pozTaken[role]?0:100;
+  return{table,bonus,close,inHand,poz,total:table+bonus+close-inHand-poz};
+}
+const B_TARGET=2005;
+function bEndHand(st,closer){
+  const r={closer:closer||'',lui:bScore(st,'lui',closer),lei:bScore(st,'lei',closer)};
+  st.scores.lui+=r.lui.total;st.scores.lei+=r.lei.total;st.result=r;st.status='ended';
+  if(st.scores.lui>=B_TARGET||st.scores.lei>=B_TARGET)st.winner=st.scores.lui>=st.scores.lei?'lui':'lei';
+}
+function bMinus(hand,cards){const h=hand.slice();for(const c of cards){const i=h.indexOf(c);if(i<0)return null;h.splice(i,1);}return h;}
+function bLeave(st,me,hand,melds){
+  const canPoz=!st.pozTaken[me]&&st.pozzetti.length>0;
+  if(hand.length===0)return canPoz?'poz':'Devi tenere almeno una carta da scartare per chiudere.';
+  if(hand.length===1&&!canPoz&&!bHasBurraco(melds))return'Ti resterebbe una carta sola: per chiudere ti serve prima un burraco.';
+  return'ok';
+}
+// applica una mossa; restituisce un messaggio d'errore oppure null se riuscita (st viene modificato)
+function bApply(st,me,kind,p){
+  if(st.status!=='playing')return'Questa mano è finita.';
+  if(st.turn!==me)return'Non è il tuo turno.';
+  const hand=st.hands[me];
+  if(kind==='draw'){
+    if(st.phase!=='draw')return'Hai già pescato in questo turno.';
+    if(!st.stock.length)return'Il mazzo è finito: prendi gli scarti.';
+    hand.push(st.stock.pop());st.phase='play';st.lock=-1;st.last={who:me,txt:'ha pescato dal mazzo.'};return null;
+  }
+  if(kind==='take'){
+    if(st.phase!=='draw')return'Hai già pescato in questo turno.';
+    if(!st.discard.length)return'Non ci sono scarti da prendere.';
+    const n=st.discard.length;hand.push(...st.discard);st.lock=n===1?st.discard[0]:-1;st.discard=[];st.phase='play';
+    st.last={who:me,txt:n===1?'ha preso lo scarto.':`ha preso gli scarti (${n} carte).`};return null;
+  }
+  if(st.phase!=='play')return'Prima pesca dal mazzo o prendi gli scarti.';
+  if(kind==='meld'||kind==='attach'){
+    const cards=(p.cards||[]).map(Number);const rest=bMinus(hand,cards);
+    if(!rest||!cards.length)return'Quelle carte non sono più nella tua mano.';
+    let melds=st.melds[me].slice(),a;
+    if(kind==='meld'){
+      a=bAnalyze(cards);if(!a)return'Servono almeno 3 carte: stesso seme in fila (scala) o stesso valore (tris), con al massimo una matta (jolly o 2).';
+      melds.push(a);
+    }else{
+      const m=melds[p.idx];if(!m)return'Combinazione non trovata.';
+      a=bAnalyze(m.c.concat(cards),m.t);if(!a)return'Queste carte non si possono attaccare a quella combinazione.';
+      melds[p.idx]=a;
+    }
+    const lv=bLeave(st,me,rest,melds);if(lv!=='ok'&&lv!=='poz')return lv;
+    st.melds[me]=melds;st.hands[me]=rest;
+    st.last={who:me,txt:kind==='meld'?'ha calato una combinazione.':'ha attaccato delle carte.'};
+    if(lv==='poz'){st.hands[me]=st.pozzetti.pop();st.pozTaken[me]=true;st.last={who:me,txt:'ha preso il pozzetto al volo!'};}
+    return null;
+  }
+  if(kind==='discard'){
+    const c=Number(p.card),rest=bMinus(hand,[c]);if(!rest)return'Quella carta non è nella tua mano.';
+    if(c===st.lock&&rest.length>0)return'Non puoi scartare la carta che hai appena preso dagli scarti.';
+    const other=BUR.other(me);
+    if(rest.length===0){
+      if(!st.pozTaken[me]&&st.pozzetti.length){st.discard.push(c);st.hands[me]=st.pozzetti.pop();st.pozTaken[me]=true;st.last={who:me,txt:'ha scartato e preso il pozzetto.'};}
+      else if(bHasBurraco(st.melds[me])){st.discard.push(c);st.hands[me]=[];st.last={who:me,txt:'ha chiuso!'};bEndHand(st,me);return null;}
+      else return'Per chiudere ti serve almeno un burraco (7 carte).';
+    }else{st.discard.push(c);st.hands[me]=rest;st.last={who:me,txt:'ha scartato.'};}
+    st.turn=other;st.phase='draw';st.lock=-1;
+    if(!st.stock.length){st.last={who:'',txt:'Il mazzo è finito: mano chiusa senza chiusura.'};bEndHand(st,null);}
+    return null;
+  }
+  return'Mossa sconosciuta.';
+}
+
+// ---- online insieme: chi sei, presenza dal vivo, burraco ----
+let rtdb=null,me=null,partnerOn=false,presRef=null,game=null,gameRef=null,bOpen=false,pendingBur=false,rtOff=[];
+const remote={x:0,z:0,a:0,sit:false,fresh:false};
+const pubState={t:0,x:1e9,z:1e9,a:1e9,sit:null};
+const other=r=>r==='lui'?'lei':'lui';
+function updateHudSub(){
+  let t=`${OPERE.length} ricordi`;
+  if(signedIn())t+=me?(partnerOn?` · ${nameOf(CH[other(me)])} è qui`:' · accesso fatto'):' · accesso fatto';
+  if(me&&game&&game.status==='playing'&&game.turn===me&&!bOpen)t+=' · tocca a te a burraco';
+  $('hud-sub').textContent=t;
+}
+function onUser(u){
+  stopRealtime();
+  if(!u)return;
+  try{rtdb=firebase.database();}catch(e){console.warn('Realtime Database',e);rtdb=null;return;}
+  let saved=null;try{saved=localStorage.getItem('chi-'+u.uid);}catch(_){}
+  if(saved==='lui'||saved==='lei')setMe(saved);
+  rtdb.ref('giocatori/'+u.uid).once('value').then(s=>{const v=s.val();
+    if(v==='lui'||v==='lei'){if(v!==me)setMe(v);}else openWho();
+  }).catch(e=>{console.warn('giocatori',e);rtdb=null;if(me)stopRealtime();});
+}
+function openWho(){$('chi-lui').textContent=nameOf(CH.lui);$('chi-lei').textContent=nameOf(CH.lei);$('chi').hidden=false;keys.clear();}
+['lui','lei'].forEach(r=>$('chi-'+r).addEventListener('click',()=>{
+  const u=auth&&auth.currentUser;if(!u||!rtdb)return;$('chi').hidden=true;
+  try{localStorage.setItem('chi-'+u.uid,r);}catch(_){}
+  rtdb.ref('giocatori/'+u.uid).set(r).catch(e=>console.warn(e));setMe(r);
+}));
+function setMe(r){
+  if(!rtdb)return;
+  stopListeners();me=r;
+  leader=CH[me];follower=CH[other(me)];
+  [leader,follower].forEach(c=>{if(c.built)c.built.tag.material.opacity=1;});
+  $('swap').hidden=true;refreshNames();
+  presRef=rtdb.ref('presenza/'+me);
+  const conn=rtdb.ref('.info/connected');
+  const onConn=conn.on('value',s=>{if(s.val()===true){presRef.onDisconnect().update({on:false,sit:false});pubPresence(true);}});
+  rtOff.push(()=>conn.off('value',onConn));
+  const pr=rtdb.ref('presenza/'+other(me));
+  const onPart=pr.on('value',s=>{const v=s.val();partnerOn=!!(v&&v.on);
+    if(v){remote.x=+v.x||0;remote.z=+v.z||0;remote.a=+v.a||0;remote.sit=!!v.sit;remote.fresh=true;}
+    if(!partnerOn)CH[other(me)].sitting=false;updateHudSub();},e=>console.warn('presenza',e));
+  rtOff.push(()=>pr.off('value',onPart));
+  gameRef=rtdb.ref('burraco/partita');
+  const onGame=gameRef.on('value',s=>{const v=s.val();game=v?bNorm(v):null;renderBur();updateHudSub();},e=>{console.warn('burraco',e);});
+  rtOff.push(()=>gameRef.off('value',onGame));
+  updateHudSub();
+  if(pendingBur){pendingBur=false;openBur();}
+}
+function stopListeners(){rtOff.forEach(f=>{try{f();}catch(_){}});rtOff=[];}
+function stopRealtime(){
+  stopListeners();
+  if(bOpen)closeBur();
+  me=null;partnerOn=false;presRef=null;game=null;gameRef=null;
+  CH.lui.sitting=CH.lei.sitting=false;
+  leader=CH.lui;follower=CH.lei;$('swap').hidden=false;
+  if(follower.built)follower.built.tag.material.opacity=.7;refreshNames();updateHudSub();
+}
+function pubPresence(force){
+  if(!presRef)return;const p=leader.root.position,now=performance.now();
+  const moved=Math.abs(p.x-pubState.x)>.02||Math.abs(p.z-pubState.z)>.02||Math.abs(leader.angle-pubState.a)>.06||leader.sitting!==pubState.sit;
+  if(!force&&(!moved||now-pubState.t<110))return;
+  pubState.t=now;pubState.x=p.x;pubState.z=p.z;pubState.a=leader.angle;pubState.sit=leader.sitting;
+  presRef.update({on:true,x:Math.round(p.x*100)/100,z:Math.round(p.z*100)/100,a:Math.round(leader.angle*100)/100,sit:!!leader.sitting}).catch(()=>{});
+}
+function driveRemote(ch,dt){
+  const p=ch.root.position,dx=remote.x-p.x,dz=remote.z-p.z,d=Math.hypot(dx,dz);
+  ch.sitting=remote.sit;
+  if(remote.fresh&&d>3){p.x=remote.x;p.z=remote.z;remote.fresh=false;}
+  if(d>.03&&!remote.sit){const s=Math.min(4.2,d*7);const k=Math.min(1,s*dt/d);p.x+=dx*k;p.z+=dz*k;ch.speed=d>.08?Math.min(3.6,s):0;
+    if(d>.15)ch.angle=lerpAngle(ch.angle,Math.atan2(dx,dz),1-Math.exp(-dt*10));}
+  else{p.x=remote.x;p.z=remote.z;ch.speed=0;ch.angle=lerpAngle(ch.angle,remote.a,1-Math.exp(-dt*8));}
+}
+
+// ---- burraco: interfaccia ----
+const SUITS=['♠','♥','♦','♣'],RN=['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+let bSel=new Set(),bSort='seme',bErrUntil=0,bErrT=0;
+function cardEl(c,cls){
+  const e=document.createElement('span');e.className='card '+(cls||'');
+  if(c>=104){e.classList.add('joker');const b=document.createElement('b');b.textContent='★';const i=document.createElement('i');i.textContent='JOLLY';e.append(b,i);}
+  else{const s=BUR.suit(c);e.classList.add(s===1||s===2?'red':'blk');const b=document.createElement('b');b.textContent=RN[BUR.rank(c)];const i=document.createElement('i');i.textContent=SUITS[s];e.append(b,i);}
+  return e;
+}
+function backEl(cls){const e=document.createElement('span');e.className='card back '+(cls||'');return e;}
+function sortHand(h){
+  const so=[0,1,3,2],key=c=>{if(c>=104)return 1e4+c;const r=BUR.rank(c),s=BUR.suit(c),rr=r===1?14:r;
+    if(r===2)return 9e3+s*20;return bSort==='seme'?so[s]*100+rr:rr*10+so[s];};
+  return h.slice().sort((a,b)=>key(a)-key(b));
+}
+function meldPoints(m){return m.c.reduce((a,c)=>a+BUR.val(c),0)+(m.c.length>=7?(m.d?100:200):0);}
+function meldEl(m,i,mine){
+  const w=document.createElement(mine?'button':'div');w.className='meld';if(mine){w.type='button';w.dataset.idx=i;}
+  const row=document.createElement('span');row.className='mrow';m.c.forEach(c=>row.appendChild(cardEl(c,'mini')));w.appendChild(row);
+  if(m.c.length>=7){const t=document.createElement('span');t.className='tag '+(m.d?'dirty':'clean');t.textContent=m.d?'Burraco sporco':'Burraco pulito';w.appendChild(t);}
+  return w;
+}
+function bMsg(t,err){const el=$('b-msg');el.textContent=t;el.classList.toggle('err',!!err);if(err){bErrUntil=performance.now()+3400;clearTimeout(bErrT);bErrT=setTimeout(()=>renderBur(),3500);}}
+function renderBur(){
+  if(!bOpen)return;
+  const st=game,opp=me?other(me):'lei';
+  $('b-score').textContent=st?`${nameOf(CH.lui)} ${st.scores.lui} · ${nameOf(CH.lei)} ${st.scores.lei}`:'';
+  const playingNow=!!(st&&st.status==='playing');
+  $('b-table').hidden=!playingNow;$('b-over').hidden=playingNow;
+  if(!playingNow){renderOver(st);return;}
+  const myTurn=st.turn===me,hand=st.hands[me];
+  bSel=new Set([...bSel].filter(c=>hand.includes(c)));
+  // opponent
+  const oh=$('b-opp');oh.textContent='';
+  const on=document.createElement('strong');on.textContent=nameOf(CH[opp]);oh.appendChild(on);
+  const oc=document.createElement('span');oc.className='meta';oc.textContent=`${st.hands[opp].length} carte · pozzetto ${st.pozTaken[opp]?'preso':'da prendere'} · sul tavolo ${st.melds[opp].reduce((a,m)=>a+meldPoints(m),0)}`;oh.appendChild(oc);
+  const fan=document.createElement('span');fan.className='ofan';for(let i=0;i<Math.min(st.hands[opp].length,14);i++)fan.appendChild(backEl('mini'));oh.appendChild(fan);
+  const om=$('b-opp-melds');om.textContent='';st.melds[opp].forEach((m,i)=>om.appendChild(meldEl(m,i,false)));
+  if(!st.melds[opp].length){const e=document.createElement('p');e.className='empty';e.textContent='Nessuna combinazione calata.';om.appendChild(e);}
+  // middle
+  $('b-stock-n').textContent=st.stock.length;
+  $('b-stock').disabled=!(myTurn&&st.phase==='draw'&&st.stock.length);
+  const dr=$('b-disc-row');dr.textContent='';st.discard.forEach(c=>dr.appendChild(cardEl(c,'mini')));
+  if(!st.discard.length){const e=document.createElement('span');e.className='empty';e.textContent='vuoto';dr.appendChild(e);}
+  $('b-disc-n').textContent=st.discard.length?`Scarti · ${st.discard.length}`:'Scarti';
+  $('b-disc').disabled=!(myTurn&&st.phase==='draw'&&st.discard.length);
+  $('b-poz').textContent=`Pozzetti sul tavolo: ${st.pozzetti.length}`;
+  // message
+  if(performance.now()>bErrUntil){
+    const last=st.last&&st.last.txt?(st.last.who?`${nameOf(CH[st.last.who])} ${st.last.txt} `:st.last.txt+' '):'';
+    const what=!myTurn?`Tocca a ${nameOf(CH[opp])}.`:st.phase==='draw'?'Tocca a te: pesca dal mazzo oppure prendi tutti gli scarti.':'Cala o attacca le carte selezionate, poi scarta una carta per finire il turno.';
+    bMsg(last+what,false);
+  }
+  // my melds
+  const mm=$('b-my-melds');mm.textContent='';const sel=[...bSel];
+  st.melds[me].forEach((m,i)=>{const el=meldEl(m,i,true);
+    if(myTurn&&st.phase==='play'&&sel.length&&bAnalyze(m.c.concat(sel),m.t))el.classList.add('can');
+    el.addEventListener('click',()=>{if(!sel.length){bMsg('Seleziona prima le carte da attaccare.',true);return;}act('attach',{idx:i,cards:sel});});
+    mm.appendChild(el);});
+  if(!st.melds[me].length){const e=document.createElement('p');e.className='empty';e.textContent='Le tue combinazioni appariranno qui.';mm.appendChild(e);}
+  $('b-me').textContent=`${nameOf(CH[me])} · pozzetto ${st.pozTaken[me]?'preso':'da prendere'} · sul tavolo ${st.melds[me].reduce((a,m)=>a+meldPoints(m),0)}`;
+  // hand
+  const hEl=$('b-hand');hEl.textContent='';
+  sortHand(hand).forEach(c=>{const b=document.createElement('button');b.type='button';b.className='hc';b.setAttribute('aria-pressed',String(bSel.has(c)));
+    b.appendChild(cardEl(c));if(c===st.lock)b.classList.add('locked');
+    b.addEventListener('click',()=>{bSel.has(c)?bSel.delete(c):bSel.add(c);renderBur();});hEl.appendChild(b);});
+  const canPlay=myTurn&&st.phase==='play';
+  const ok=sel.length>=3&&bAnalyze(sel);
+  $('b-meld').disabled=!(canPlay&&ok);$('b-meld').textContent=sel.length>=3&&!ok?'Combinazione non valida':`Cala${sel.length?' ('+sel.length+')':''}`;
+  $('b-discard').disabled=!(canPlay&&sel.length===1);
+  $('b-clear').hidden=!sel.length;
+  $('b-sort').textContent=bSort==='seme'?'Ordina per valore':'Ordina per seme';
+}
+function renderOver(st){
+  const o=$('b-over-body');o.textContent='';
+  const h=document.createElement('h3');
+  const p=document.createElement('p');p.className='lead';
+  const btn=$('b-new');btn.hidden=false;
+  if(!me){h.textContent='Burraco';p.textContent='Accedi per giocare.';btn.hidden=true;o.append(h,p);return;}
+  if(!st){h.textContent='Una partita a burraco';p.textContent='Si gioca in due, con 2 mazzi e 4 jolly. Vince chi arriva per primo a 2005 punti.';btn.textContent='Inizia la partita';o.append(h,p,rulesEl());return;}
+  const r=st.result;
+  h.textContent=st.winner?`Ha vinto ${nameOf(CH[st.winner])}!`:r&&r.closer?`${nameOf(CH[r.closer])} ha chiuso la mano ${st.hand}`:`Mano ${st.hand} finita`;
+  p.textContent=st.winner?`Partita finita ${st.scores.lui} a ${st.scores.lei}.`:`Si continua: prossima mano, vince chi arriva a ${B_TARGET}.`;
+  o.append(h,p);
+  if(r){const tb=document.createElement('table');tb.className='res';
+    const rows=[['','lui','lei'],['Carte calate','table'],['Burrachi','bonus'],['Chiusura','close'],['Carte rimaste in mano','inHand',-1],['Pozzetto non preso','poz',-1],['Totale mano','total'],['Totale partita','score']];
+    rows.forEach((row,ri)=>{const tr=document.createElement('tr');
+      if(ri===0){['',nameOf(CH.lui),nameOf(CH.lei)].forEach(x=>{const th=document.createElement('th');th.textContent=x;tr.appendChild(th);});}
+      else{const th=document.createElement('th');th.textContent=row[0];tr.appendChild(th);
+        ['lui','lei'].forEach(w=>{const td=document.createElement('td');const v=row[1]==='score'?st.scores[w]:r[w][row[1]];td.textContent=(row[2]&&v?'−':'')+v;tr.appendChild(td);});
+        if(row[1]==='total'||row[1]==='score')tr.className='sum';}
+      tb.appendChild(tr);});
+    o.appendChild(tb);}
+  btn.textContent=st.winner?'Nuova partita':'Prossima mano';
+}
+function rulesEl(){const d=document.createElement('details');d.className='rules';const s=document.createElement('summary');s.textContent='Come si gioca';d.appendChild(s);
+  ['A ogni turno peschi una carta dal mazzo oppure prendi tutti gli scarti.','Cali combinazioni di almeno 3 carte: scale dello stesso seme (es. 4♥ 5♥ 6♥) o tris dello stesso valore (es. 9♠ 9♥ 9♣).','Jolly e 2 (pinelle) sostituiscono qualsiasi carta, ma al massimo uno per combinazione.','Finisci il turno scartando una carta.','Quando finisci le carte prendi il pozzetto: 11 carte nuove.','Per chiudere devi aver preso il pozzetto e avere un burraco: una combinazione di 7 o più carte.','Punti: jolly 30, pinella 20, asso 15, dall’8 al re 10, dal 3 al 7 5. Burraco pulito +200, sporco +100, chiusura +100. Le carte rimaste in mano si sottraggono, e il pozzetto non preso costa 100.']
+    .forEach(t=>{const p=document.createElement('p');p.textContent=t;d.appendChild(p);});return d;}
+function act(kind,p){
+  if(!gameRef||!me)return;let err=null;
+  gameRef.transaction(cur=>{
+    err=null;
+    if(kind==='new'){if(cur&&cur.status==='playing'){err='C’è già una mano in corso.';return;}return bNewHand(cur?bNorm(cur):null);}
+    if(!cur)return cur;
+    const st=bNorm(cur);const e=bApply(st,me,kind,p||{});if(e){err=e;return;}return st;
+  },(e,committed)=>{
+    if(e){bMsg('Mossa non salvata: controlla la connessione e riprova.',true);return;}
+    if(!committed){if(err)bMsg(err,true);return;}
+    if(kind==='meld'||kind==='attach'||kind==='discard')bSel.clear();
+    renderBur();
+  },false);
+}
+$('b-stock').addEventListener('click',()=>act('draw'));
+$('b-disc').addEventListener('click',()=>act('take'));
+$('b-meld').addEventListener('click',()=>act('meld',{cards:[...bSel]}));
+$('b-discard').addEventListener('click',()=>{const c=[...bSel][0];if(c!=null)act('discard',{card:c});});
+$('b-clear').addEventListener('click',()=>{bSel.clear();renderBur();});
+$('b-sort').addEventListener('click',()=>{bSort=bSort==='seme'?'valore':'seme';renderBur();});
+$('b-new').addEventListener('click',()=>act('new'));
+$('b-close').addEventListener('click',()=>closeBur());
+function openBur(){
+  if(!configured)return;
+  if(!signedIn()){openLogin(()=>{if(me)openBur();else pendingBur=true;});return;}
+  if(!rtdb){bShowOffline();return;}
+  if(!me){pendingBur=true;openWho();return;}
+  bOpen=true;mode='bur';keys.clear();joy.x=joy.y=0;knob.style.transform='';
+  const s=SEATS[me];leader.sitting=true;leader.root.position.set(s.x,0,s.z);leader.angle=s.a;pubPresence(true);
+  $('bur').hidden=false;renderBur();updateHudSub();
+}
+function bShowOffline(){bOpen=true;mode='bur';$('bur').hidden=false;$('b-table').hidden=true;$('b-over').hidden=false;
+  const o=$('b-over-body');o.textContent='';const h=document.createElement('h3');h.textContent='Gioco online non collegato';
+  const p=document.createElement('p');p.className='lead';p.textContent='Manca il database per il gioco in diretta (Realtime Database) oppure le sue regole non permettono a questo account di entrare.';o.append(h,p);$('b-new').hidden=true;}
+function closeBur(){
+  bOpen=false;mode='walk';$('bur').hidden=true;
+  if(leader.sitting){leader.sitting=false;const s=SEATS[me]||SEATS.lui;leader.root.position.set(s.x,0,s.z+.95);collide(leader.root.position);leader.angle=0;pubPresence(true);}
+  updateHudSub();
+}
+
 // ---- start ----
 $('enter').addEventListener('click',()=>{playing=true;document.body.classList.add('playing');$('start').hidden=true;});
 if(matchMedia('(pointer:fine)').matches)$('start-hint').textContent='Al computer: WASD o frecce per camminare, trascina col mouse per girare la visuale.';
@@ -1071,6 +1558,8 @@ function input(){let x=joy.x,y=joy.y;
   if(keys.has('KeyD')||keys.has('ArrowRight'))x+=1;if(keys.has('KeyA')||keys.has('ArrowLeft'))x-=1;
   return {x,y,run:keys.has('ShiftLeft')||keys.has('ShiftRight')||Math.hypot(joy.x,joy.y)>.97};}
 function animate(ch,dt,t){const bt=ch.built;
+  if(ch.sitting){const sc=ch.root.scale.x;bt.legs.forEach(l=>l.rotation.x=-1.5);bt.arms.forEach(a=>a.rotation.x=-.7);
+    bt.body.position.y=-(BASE[ch.base].hip-.5/sc)+Math.sin(t*1.7+ch.seed)*.003;ch.root.rotation.y=ch.angle;ch.smooth=0;return;}
   ch.smooth+=(ch.speed-ch.smooth)*(1-Math.exp(-dt*10));
   const amt=Math.min(ch.smooth/2.1,1.25);ch.phase+=dt*(4+ch.smooth*3)*(amt>.03?1:0);const sw=Math.sin(ch.phase);
   bt.legs[0].rotation.x=sw*.55*amt;bt.legs[1].rotation.x=-sw*.55*amt;bt.arms[0].rotation.x=-sw*.45*amt;bt.arms[1].rotation.x=sw*.45*amt;
@@ -1087,6 +1576,9 @@ function step(dt,t){
       leader.angle=lerpAngle(leader.angle,Math.atan2(mx,mz),1-Math.exp(-dt*12));leader.speed=s;}else leader.speed=0;
     collide(lp);
   }else leader.speed=0;
+  if(leader.sitting&&me){const se=SEATS[me];lp.set(se.x,0,se.z);leader.angle=se.a;}
+  if(me&&partnerOn){driveRemote(follower,dt);}else{
+  follower.sitting=false;
   const a=leader.angle,side=follower===CH.lei?1:-1;
   const tx=clamp(lp.x-Math.cos(a)*.62*side-Math.sin(a)*.35,-W/2+.32,W/2-.32),tz=clamp(lp.z+Math.sin(a)*.62*side-Math.cos(a)*.35,-D/2+.32,D/2-.32);
   const dx=tx-fp.x,dz=tz-fp.z,d=Math.hypot(dx,dz);
@@ -1094,10 +1586,13 @@ function step(dt,t){
   else{follower.speed=0;follower.angle=lerpAngle(follower.angle,a,1-Math.exp(-dt*4));}
   const sx=fp.x-lp.x,sz=fp.z-lp.z,sd=Math.hypot(sx,sz);if(sd<.48&&sd>1e-4){fp.x=lp.x+sx/sd*.48;fp.z=lp.z+sz/sd*.48;}
   collide(fp);
+  }
+  if(me)pubPresence(false);
   animate(CH.lui,dt,t);animate(CH.lei,dt,t);
   let best=-1,bd=1.25;OPERE.forEach((o,i)=>{const dd=Math.hypot(o.spot.x-lp.x,o.spot.z-lp.z);if(dd<bd){bd=dd;best=i;}});
+  if(configured){const td=Math.hypot(lp.x-TABLE.x,lp.z-TABLE.z);if(td<1.6&&td-.35<bd)best=-2;}
   if(!playing||viewing>=0||mode!=='walk')best=-1;
-  if(best!==nearIdx){nearIdx=best;nearBtn.hidden=best<0;if(best>=0)nearBtn.textContent=`Guarda «${OPERE[best].cur.title}»`;}
+  if(best!==nearIdx){nearIdx=best;nearBtn.hidden=best===-1;if(best>=0)nearBtn.textContent=`Guarda «${OPERE[best].cur.title}»`;else if(best===-2)nearBtn.textContent='Gioca a burraco';}
   if(!playing&&!reduced)yaw+=dt*.07;
   let dd,lf;
   if(mode==='dress'){const ch=CH[dressWho],hgt=ch.ap.altezza/100;tgt.set(ch.root.position.x,hgt*.55,ch.root.position.z);dd=(innerWidth/innerHeight<.85?3.4:2.9)*hgt/1.75;lf=.1;}
