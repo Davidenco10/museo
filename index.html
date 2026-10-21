@@ -599,11 +599,11 @@ part(scene,cyl(.22,.18,.32,18),L(0x8a6a45),1.55,.16,FB_Z+.45);
 const sofaG=new THREE.Group();sofaG.position.set(0,0,-2.25);sofaG.rotation.y=Math.PI;scene.add(sofaG);
 {const M=L(0xb5653f),Md=L(0x8f4a2c),leg=L(0x3b2a1e);
   [[-.75,-.28],[.75,-.28],[-.75,.28],[.75,.28]].forEach(([a,b])=>part(sofaG,cyl(.025,.018,.1,8),leg,a,.05,b));
-  part(sofaG,box(1.7,.2,.68),Md,0,.2,0);
-  [-.37,.37].forEach(x=>part(sofaG,box(.72,.14,.6),M,x,.37,.03));
+  part(sofaG,box(1.7,.2,.62),Md,0,.2,-.02);
+  [-.37,.37].forEach(x=>part(sofaG,box(.72,.14,.56),M,x,.37,.01));
   const bk=part(sofaG,box(1.7,.56,.18),M,0,.6,-.26);bk.rotation.x=-.1;
   [-.37,.37].forEach(x=>{const c=part(sofaG,box(.7,.38,.12),M,x,.66,-.15);c.rotation.x=-.16;});
-  [-1,1].forEach(s=>{part(sofaG,box(.16,.32,.68),M,s*.77,.42,0);part(sofaG,cyl(.09,.09,.68,14),M,s*.77,.58,0).rotation.x=Math.PI/2;});
+  [-1,1].forEach(s=>{part(sofaG,box(.16,.32,.64),M,s*.77,.42,-.02);part(sofaG,cyl(.09,.09,.64,14),M,s*.77,.58,-.02).rotation.x=Math.PI/2;});
   [[-.58,0xf0e4d2,.25],[.6,0x7d2236,-.2]].forEach(([x,c,r])=>{const p=part(sofaG,sph(1,14,10),L(c),x,.6,-.06);p.scale.set(.17,.15,.07);p.rotation.set(-.25,0,r);});
   const th=part(sofaG,box(.36,.03,.62),L(0x7d2236),-.77,.68,0);th.rotation.z=.15;}
 const cat=new THREE.Group();cat.position.set(.78,.67,0);cat.rotation.y=-Math.PI/2;cat.scale.setScalar(.85);sofaG.add(cat);
@@ -739,7 +739,7 @@ function drawBoard(){const c=bctx;c.fillStyle='#1d1b1e';c.fillRect(0,0,256,192);
 // colliders [x1,z1,x2,z2]
 const BOXES=[
   [-1.2,-D/2,1.2,FB_Z+1.05],[1.3,FB_Z+.2,1.8,FB_Z+.7],
-  [-.88,-2.62,.88,-1.88],
+  [-.88,-2.58,.88,-1.88],
   [-W/2,BED.z-BED.w/2-.05,BED.x1+.05,BED.z+BED.w/2+.05],[-W/2,-.65,-W/2+.5,-.15],[-W/2,1.75,-W/2+.5,2.25],
   [W/2-.5,.95,W/2,2.45],[W/2-1.0,-D/2,W/2,-D/2+1.0],[-3.2,D/2-.36,-1.6,D/2]
 ];
@@ -892,7 +892,7 @@ function faceCanvas(ch,mode){
   if(short){
     const buzz=ap.capelli==='rasati';
     for(let px=0;px<W2;px+=2){const az=(px/W2-.25)*Math.PI*2,back=(1-Math.cos(az))/2;
-      const end=(buzz?128:122)+78*back,start=end-(buzz?24:30);
+      const end=(buzz?128:138)+62*back,start=end-(buzz?24:26);
       const g=x.createLinearGradient(0,start,0,end);g.addColorStop(0,hair);g.addColorStop(1,hair+'00');
       x.globalAlpha=buzz?.85:.96;x.fillStyle=hair;x.fillRect(px,0,2,start);x.fillStyle=g;x.fillRect(px,start,2,end-start);}
     x.globalAlpha=1;
@@ -972,16 +972,35 @@ function buildHair(P,head,ch,R){
     im.count=k;g.add(im);if(ol){const o=new THREE.InstancedMesh(geo,P.ol,n);for(let i=0;i<k;i++){const m=new THREE.Matrix4();im.getMatrixAt(i,m);o.setMatrixAt(i,m);}o.count=k;g.add(o);}return im;};
   const style=ap.capelli;
   if(style==='sfumati'||style==='ricci corti'){
-    cap(.33,1.03,-.24);
+    if(style==='ricci corti')cap(.33,1.03,-.24);
     if(style==='sfumati'){
-      const blob=new THREE.SphereGeometry(1,12,8);
-      inst(blob,64,hc,i=>{const th=Math.pow(r(),.85)*.9,az=(r()*2-1)*Math.PI;
-        const side=Math.abs(az)>.9;if(side&&th>.62)return null;if(Math.abs(az)>2.3&&th>.5)return null;
-        const n=dirOn(th,az),pos=n.clone().multiplyScalar(R*(1.05+r()*.05)).setY(n.y*R*1.12+R*.03);
-        const fwd=new THREE.Vector3((r()-.5)*.5,.55,1);
-        return orientMatrix(pos,n,fwd,new THREE.Vector3(R*(.19+r()*.08),R*(.13+r()*.06),R*(.32+r()*.12)));},true);
-      inst(blob,8,hc,i=>{const az=(i/7-.5)*1.25,th=.8+r()*.06,n=dirOn(th,az),pos=n.clone().multiplyScalar(R*1.06).setY(n.y*R*1.12+R*.03);
-        return orientMatrix(pos,n,new THREE.Vector3(az*.4,-.25,1),new THREE.Vector3(R*.15,R*.08,R*.24));},true);
+      const Rh=R*1.07,geo=new THREE.SphereGeometry(Rh,56,28,0,Math.PI*2,0,Math.PI*.5),pp=geo.attributes.position;
+      for(let i=0;i<pp.count;i++){let x=pp.getX(i),y=pp.getY(i),z=pp.getZ(i);
+        const th=Math.acos(clamp(y/Rh,-1,1)),len=Math.hypot(x,z)||1e-6,fr=z/len*Math.sin(th),side=Math.abs(x/len);
+        // volume: soft on the crown, strongest just behind the hairline at the front, flat on the sides
+        const frontW=Math.pow(Math.max(0,(z+.35*x)/len/1.06),1.4),quiff=Math.exp(-Math.pow((th-.66)/.24,2))*frontW;
+        const crown=Math.exp(-Math.pow(th/.55,2))*.6;
+        const sideFlat=1-.05*side*Math.min(1,th/.9);
+        const k=(1+.04*crown+.15*quiff)*sideFlat;
+        x*=k*.98;z*=k;y=y*k*.98+R*.035;
+        y+=R*.03*quiff;z+=R*.03*quiff;
+        pp.setXYZ(i,x,y,z);}
+      geo.computeVertexNormals();
+      const cv=document.createElement('canvas');cv.width=512;cv.height=256;const cx2=cv.getContext('2d');
+      cx2.fillStyle=hc;cx2.fillRect(0,0,512,256);
+      const dkc=mix(hc,'#000000',.45),ltc=mix(hc,'#d8a878',.38);
+      for(let i=0;i<900;i++){const x0=r()*512,y0=r()*256,l=40+r()*90,bend=(r()-.5)*10;cx2.strokeStyle=r()<.6?dkc:ltc;cx2.globalAlpha=.12+r()*.28;cx2.lineWidth=.8+r()*1.6;
+        cx2.beginPath();cx2.moveTo(x0,y0);cx2.quadraticCurveTo(x0+bend,y0-l/2,x0+bend*1.8,y0-l);cx2.stroke();}
+      cx2.globalAlpha=1;
+      cx2.globalCompositeOperation='destination-in';cx2.beginPath();cx2.moveTo(0,0);cx2.lineTo(512,0);
+      for(let x=512;x>=0;x-=4){const u=x/512,c2=Math.cos((u-.25)*Math.PI*2),fd=Math.max(0,c2),bk=Math.max(0,-c2),
+          du=Math.abs(((u-.25+1.5)%1)-.5),temple=Math.exp(-Math.pow((du-.1)/.035,2));
+        cx2.lineTo(x,226-70*fd*fd+14*bk+14*temple+(r()-.5)*4);}
+      cx2.closePath();cx2.fill();cx2.globalCompositeOperation='source-over';
+      const tex=P.tex(new THREE.CanvasTexture(cv));tex.anisotropy=maxAniso;
+      const mat=P.keep(new THREE.MeshToonMaterial({color:'#ffffff',map:tex,gradientMap:TOON,alphaTest:.5,side:THREE.DoubleSide}));
+      P.geo(geo);const m=new THREE.Mesh(geo,mat);m.position.set(0,0,-R*.03);g.add(m);
+
     }else{
       const curl=new THREE.TorusGeometry(1,.45,6,10);
       inst(curl,110,hc,i=>{const th=Math.pow(r(),.9)*1.05,az=(r()*2-1)*Math.PI;if(th>.9&&Math.abs(az)<.8)return null;
@@ -1740,7 +1759,7 @@ const nowS=()=>performance.now()/1000;
 function anchorFor(ch,pose){
   const D=ch.rig.D;
   if(pose==='tavolo'){const s=SEATS[ch.base];return{x:s.x-Math.sin(s.a)*.05,z:s.z-Math.cos(s.a)*.05,a:s.a};}
-  if(pose.startsWith('sofa')){const i=+pose[4];return{x:SOFA.x+SOFA.slots[i],z:SOFA.z+.13,a:Math.PI};}
+  if(pose.startsWith('sofa')){const i=+pose[4];return{x:SOFA.x+SOFA.slots[i],z:SOFA.z-.02,a:Math.PI};}
   if(pose.startsWith('bed')){const i=+pose[3];return{x:BED.x0+.36+D.spineUp+D.neckUp+D.headUp+D.R*.95,z:BEDS[i],a:Math.PI/2};}
   return null;
 }
@@ -1788,11 +1807,12 @@ function poseTarget(ch,t){
     const seat=P==='tavolo'?.515:SOFA.seat;
     T.hipY=seat+.075*H;T.hpL=E(-1.5,0,.05);T.hpR=E(-1.5,0,-.05);T.knL=E(1.47);T.knR=E(1.47);T.anL=E(.05);T.anR=E(.05);
     if(P==='tavolo'){T.spine=E(.1);T.shL=E(-.95,0,.12);T.shR=E(-.95,0,-.12);T.elL=E(-.7);T.elR=E(-.7);}
-    else{T.spine=E(-.06);T.shL=E(-.42,0,.14);T.shR=E(-.42,0,-.14);T.elL=E(-.9);T.elR=E(-.9);
+    else{T.spine=E(-.08);T.shL=E(-.25,0,.05);T.shR=E(-.25,0,-.05);T.elL=E(-1.05);T.elR=E(-1.05);
       if(pt.pose.startsWith('sofa')&&pt.poseT>.4){const s=sideOf();
-        if(ch.base==='lui'){const n=s>0?'L':'R',far=s>0?'R':'L';
-          ik.push({side:n,pole:new THREE.Vector3(s*.5,.1,-1),target:()=>wpos(pt.rig.J['sh'+far]).add(new THREE.Vector3(0,-.09,0)).add(fwdOf(pt).multiplyScalar(-.1)).add(leftOf(pt).multiplyScalar(s*.02))});}
-        else{T.head=E(.05,0,-s*.38);T.neck=E(0,0,-s*.12);T.spine=E(-.04,0,-s*.1);}}}
+        if(ch.base==='lui'){const n=s>0?'L':'R';
+          ik.push({side:n,pole:new THREE.Vector3(s,.6,-.5),target:()=>{const me0=wpos(ch.root),sp=wpos(pt.rig.J.spine),dir=sp.clone().sub(me0).setY(0).normalize();
+            return sp.add(dir.multiplyScalar(.06)).add(fwdOf(pt).multiplyScalar(-.16)).setY(.9);}});}
+        else{T.head=E(.04,0,-s*.2);T.neck=E(0,0,-s*.08);}}}
   }else if(P.startsWith('bed')){
     T.hips=E(-Math.PI/2);T.hipY=.6+.062*H;T.neck=E(.16);T.anL=E(1.25);T.anR=E(1.25);T.shL=E(0,0,.12);T.shR=E(0,0,-.12);T.elL=E(-.12);T.elR=E(-.12);
     if(ch.poseT>3)face='closed';
