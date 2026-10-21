@@ -147,6 +147,9 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .bur-in{max-width:980px;margin:0 auto;display:grid;gap:12px;--cw:clamp(40px,7.2vw,60px);--mw:clamp(24px,4vw,34px)}
 .bur-grid{display:grid;gap:12px;min-width:0}
 .bur-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bur-head>div:first-child{margin-right:auto}
+.bur-confirm{background:#7d2236;border-radius:10px;padding:12px 14px;display:grid;gap:10px}
+.bur-confirm p{margin:0;font-size:14.5px;line-height:1.45}
 .bur-title{font-family:var(--font-display);font-size:32px;line-height:1}
 .bur-score{display:block;margin-top:4px;font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#cfe3d6;font-variant-numeric:tabular-nums}
 .bur .btn{border-color:#f4efe6;color:#f4efe6}
@@ -296,8 +299,13 @@ body{font-size:14px}
   <div class="bur-in">
     <header class="bur-head">
       <div><div class="bur-title">Burraco</div><span class="bur-score" id="b-score"></span></div>
-      <button class="btn push" id="b-close" type="button">Torna nella stanza</button>
+      <button class="btn" id="b-quit" type="button" hidden>Abbandona partita</button>
+      <button class="btn" id="b-close" type="button">Torna nella stanza</button>
     </header>
+    <div class="bur-confirm" id="b-confirm" hidden>
+      <p>Vuoi davvero abbandonare? La partita in corso e i punti di questa partita verranno cancellati, anche per l’altra persona.</p>
+      <div class="actions"><button class="btn" id="b-quit-no" type="button">No, continua</button><button class="btn accent" id="b-quit-yes" type="button">Sì, abbandona</button></div>
+    </div>
     <div id="b-table" class="bur-grid">
       <section class="zone"><div class="zone-h" id="b-opp"></div><div class="melds" id="b-opp-melds"></div></section>
       <section class="mid">
@@ -1564,7 +1572,7 @@ function setMe(r){
   actBaseline=false;const az=rtdb.ref('azione');const onAz=az.on('value',s=>onAzione(s.val()),e=>console.warn('azione',e));rtOff.push(()=>az.off('value',onAz));
   const mu=rtdb.ref('musica/playlist');const onMu=mu.on('value',s=>{const v=s.val();if(typeof v==='string')setPlaylist(v,false);},()=>{});rtOff.push(()=>mu.off('value',onMu));
   gameRef=rtdb.ref('burraco/partita');
-  const onGame=gameRef.on('value',s=>{const v=s.val();game=v?bNorm(v):null;renderBur();updateHudSub();},e=>{console.warn('burraco',e);});
+  const onGame=gameRef.on('value',s=>{const v=s.val();if(v&&v.status==='abbandonata'){game=null;quitBy=v.by==='lei'?'lei':'lui';}else{game=v?bNorm(v):null;quitBy=null;}renderBur();updateHudSub();},e=>{console.warn('burraco',e);});
   rtOff.push(()=>gameRef.off('value',onGame));
   updateHudSub();
   if(pendingBur){pendingBur=false;openBur();}
@@ -1623,6 +1631,7 @@ function renderBur(){
   const st=game,opp=me?other(me):'lei';
   $('b-score').textContent=st?`${nameOf(CH.lui)} ${st.scores.lui} · ${nameOf(CH.lei)} ${st.scores.lei}`:'';
   const playingNow=!!(st&&st.status==='playing');
+  $('b-quit').hidden=!(me&&st&&!st.winner);if($('b-quit').hidden)$('b-confirm').hidden=true;
   $('b-table').hidden=!playingNow;$('b-over').hidden=playingNow;
   if(!playingNow){renderOver(st);return;}
   const myTurn=st.turn===me,hand=st.hands[me];
@@ -1668,13 +1677,14 @@ function renderBur(){
   $('b-clear').hidden=!sel.length;
   $('b-sort').textContent=bSort==='seme'?'Ordina per valore':'Ordina per seme';
 }
+let quitBy=null;
 function renderOver(st){
   const o=$('b-over-body');o.textContent='';
   const h=document.createElement('h3');
   const p=document.createElement('p');p.className='lead';
   const btn=$('b-new');btn.hidden=false;
   if(!me){h.textContent='Burraco';p.textContent='Accedi per giocare.';btn.hidden=true;o.append(h,p);return;}
-  if(!st){h.textContent='Una partita a burraco';p.textContent='Si gioca in due, con 2 mazzi e 4 jolly. Vince chi arriva per primo a 2005 punti.';btn.textContent='Inizia la partita';o.append(h,p,rulesEl());return;}
+  if(!st){h.textContent='Una partita a burraco';p.textContent=(quitBy?`${quitBy===me?'Hai abbandonato':nameOf(CH[quitBy])+' ha abbandonato'} la partita. `:'')+'Si gioca in due, con 2 mazzi e 4 jolly. Vince chi arriva per primo a 2005 punti.';btn.textContent='Inizia la partita';o.append(h,p,rulesEl());return;}
   const r=st.result;
   h.textContent=st.winner?`Ha vinto ${nameOf(CH[st.winner])}!`:r&&r.closer?`${nameOf(CH[r.closer])} ha chiuso la mano ${st.hand}`:`Mano ${st.hand} finita`;
   p.textContent=st.winner?`Partita finita ${st.scores.lui} a ${st.scores.lei}.`:`Si continua: prossima mano, vince chi arriva a ${B_TARGET}.`;
@@ -1697,7 +1707,8 @@ function act(kind,p){
   if(!gameRef||!me)return;let err=null;
   gameRef.transaction(cur=>{
     err=null;
-    if(kind==='new'){if(cur&&cur.status==='playing'){err='C’è già una mano in corso.';return;}return bNewHand(cur?bNorm(cur):null);}
+    if(kind==='quit')return{status:'abbandonata',by:me,ts:Date.now()};
+    if(kind==='new'){if(cur&&cur.status==='playing'){err='C’è già una mano in corso.';return;}return bNewHand(cur&&cur.status!=='abbandonata'?bNorm(cur):null);}
     if(!cur)return cur;
     const st=bNorm(cur);const e=bApply(st,me,kind,p||{});if(e){err=e;return;}return st;
   },(e,committed)=>{
@@ -1715,6 +1726,9 @@ $('b-clear').addEventListener('click',()=>{bSel.clear();renderBur();});
 $('b-sort').addEventListener('click',()=>{bSort=bSort==='seme'?'valore':'seme';renderBur();});
 $('b-new').addEventListener('click',()=>act('new'));
 $('b-close').addEventListener('click',()=>closeBur());
+$('b-quit').addEventListener('click',()=>{$('b-confirm').hidden=false;$('b-quit-yes').focus();});
+$('b-quit-no').addEventListener('click',()=>{$('b-confirm').hidden=true;});
+$('b-quit-yes').addEventListener('click',()=>{$('b-confirm').hidden=true;bSel.clear();act('quit');});
 function openBur(){
   if(!configured)return;
   if(!signedIn()){openLogin(()=>{if(me)openBur();else pendingBur=true;});return;}
