@@ -152,7 +152,7 @@ body{font-size:14px}
 <div id="app"></div>
 
 <header class="hud-top">
-  <div class="label"><span class="label-title">Il nostro museo</span><span class="label-sub">Sala 1 · 7 opere</span></div>
+  <div class="label"><span class="label-title">Il nostro museo</span><span class="label-sub" id="hud-sub">Sala 1 · 7 opere</span></div>
   <div class="hud-btns">
     <button id="dress-open" class="pill light" type="button" aria-label="Apri il camerino">
       <span>Camerino</span>
@@ -611,7 +611,7 @@ function sanitizeOpera(d,def){
   return{title:(t&&t.trim())?t:def.title,sub:str(d.sub,40)??def.sub,text:str(d.text,400)??def.text,
     img:(typeof d.img==='string'&&d.img.length<1100000&&IMG_RE.test(d.img))?d.img:null};
 }
-function refreshAuthUi(){updateEditAffordance();const b=$('d-auth');b.hidden=!configured;b.textContent=signedIn()?'Esci':'Accedi';
+function refreshAuthUi(){updateEditAffordance();$('hud-sub').textContent='Sala 1 · 7 opere'+(signedIn()?' · accesso fatto':'');const b=$('d-auth');b.hidden=!configured;b.textContent=signedIn()?'Esci':'Accedi';
   if(mode==='dress')setDressStatus(baseDressStatus());}
 function initOnline(){
   try{
@@ -620,6 +620,7 @@ function initOnline(){
   }catch(e){console.error('Firebase',e);fdb=null;auth=null;configured=false;}
   refreshAuthUi();
   if(!configured){$('start-hint').textContent+=' (Salvataggio online non ancora collegato.)';return;}
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
   auth.onAuthStateChanged(()=>refreshAuthUi());
   ['lui','lei'].forEach(who=>{
     fdb.collection('aspetto').doc(who).onSnapshot(snap=>{
