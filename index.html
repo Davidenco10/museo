@@ -1395,7 +1395,7 @@ function buildHand(P,wr,j,D,s,n,skin,nail){const Lh=D.hand,TH={thin:true};
   // cuscinetto alla base del pollice
   const tn=tm(P,wr,new THREE.SphereGeometry(1,16,12),skin,-s*.115*Lh,-.19*Lh,-.022*Lh,TH);tn.scale.set(.12*Lh,.2*Lh,.06*Lh);tn.rotation.z=-s*.42;
   FINGERS.forEach(([x,y,len,r0,r1,spr],i)=>{
-    const base=new THREE.Group();base.position.set(s*x*Lh,y*Lh,0);base.rotation.z=s*spr;wr.add(base);
+    const base=new THREE.Group();base.position.set(s*x*Lh,y*Lh,0);base.rotation.z=s*spr;wr.add(base);(wr.userData.bases=wr.userData.bases||[]).push([base,s*spr]);
     const L=[len*.45,len*.3,len*.25].map(v=>v*Lh),r=[r0,(r0+r1)/2,(r0+r1)/2,r1].map(v=>v*Lh);
     let par=base;
     ['a','b','c'].forEach((k,q)=>{const jt=j('fg'+n+(i+1)+k,par,0,q?-L[q-1]:0,0);jt.userData.len=L[q];jt.userData.r1=r[q+1];jt.userData.r0=r[q];
@@ -2723,6 +2723,7 @@ function gripOf(ch,mp,sd){const s=sd==='L'?1:-1,H=ch.rig.D.H,a=MG.a,qT=new THREE
   const W=pc.clone().add(new THREE.Vector3(0,ch.rig.D.palmC,0).applyQuaternion(Q));return{pc,Q,W};}
 // dita attorno alla tazza: ogni falange si piega finché tocca la parete, senza entrarci
 const _wv=new THREE.Vector3(),_wq=new THREE.Quaternion();
+function fingersTogether(rig,sd,k){const b=rig.J['wr'+sd].userData.bases;if(b)b.forEach(([g,z])=>{g.rotation.z=z*(1-k);});}
 function thumbPose(rig,sd,frac){const w=rig.J['wr'+sd],u=w.userData;if(!u.tb)return;u.tb.quaternion.copy(u.tRest.q).slerp(u.tGrip.q,frac);u.tb.position.copy(u.tRest.p).lerp(u.tGrip.p,frac);}
 function wrapFingers(rig,sd,O,u,frac,k,tf,R0){const J=rig.J;tf=tf==null?frac:tf;thumbPose(rig,sd,tf);
   // pollice appoggiato sulla parete: sale verso il bordo ma si ferma prima, poi gira attorno alla tazza
@@ -2730,7 +2731,7 @@ function wrapFingers(rig,sd,O,u,frac,k,tf,R0){const J=rig.J;tf=tf==null?frac:tf;
     const n=rel.addScaledVector(u,-hb).normalize(),c=new THREE.Vector3().crossVectors(u,n);
     const Fw=new THREE.Vector3(0,-1,0).applyQuaternion(w.getWorldQuaternion(_wq));if(c.dot(Fw)<0)c.negate();
     let uu=u;if(R0){const ts=new THREE.Vector3(sd==='L'?-1:1,0,0).applyQuaternion(_wq);if(ts.dot(u)<0)uu=u.clone().negate();}
-    const Lt=.49*rig.D.hand,cp=R0?.5:clamp((MUG_H*.9-hb)/Lt,0,.82),sp=Math.sqrt(1-cp*cp);
+    const Lt=.49*rig.D.hand,cp=R0?.2:clamp((MUG_H*.9-hb)/Lt,0,.82),sp=Math.sqrt(1-cp*cp);
     const d=uu.clone().multiplyScalar(cp).addScaledVector(c,sp).normalize(),Yt=d.clone().negate(),Zt=n.clone(),Xt=new THREE.Vector3().crossVectors(Yt,Zt);
     const qw=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(Xt,Yt,Zt));
     const ql=w.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(qw);tb.quaternion.copy(w.userData.tRest.q).slerp(ql,tf);}}
@@ -2758,23 +2759,26 @@ function touchPrep(ch,o){const t=o.touch(),T0=o.target(),rig=ch.rig,D=rig.D,s=o.
   const C=t.p.clone().addScaledVector(t.d,T0.clone().sub(t.p).dot(t.d));let n=T0.clone().sub(C);
   if(n.lengthSq()<1e-8)n.set(0,0,1);n.normalize();
   // la mano può scivolare un po' attorno al corpo dell'altro: si sceglie il punto da cui l'avambraccio non deve attraversarlo
-  if(o.slide){const pt=partnerOf(ch),tb=torsoBox(pt),sh=wpos(rig.J['sh'+o.side]),segs=armSegs(pt);let best=null;
-    for(let dl=-1.05;dl<=1.051;dl+=.15){const nd=n.clone().applyAxisAngle(t.d,dl),x=nd.dot(tb.lf)/tb.ax,z=nd.dot(tb.fw)/tb.az,r=1/Math.sqrt(x*x+z*z+1e-9);
+  if(o.slide){const pt=partnerOf(ch),tb=torsoBox(pt),sh=wpos(rig.J['sh'+o.side]),segs=armSegs(pt),armSide=Math.sign(sh.clone().sub(C).dot(tb.lf))||1;let best=null;
+    for(let dl=-1.05;dl<=1.051;dl+=.15){const nd0=n.clone().applyAxisAngle(t.d,dl);if(nd0.dot(tb.lf)*armSide<-.12)continue;const nd=nd0,x=nd.dot(tb.lf)/tb.ax,z=nd.dot(tb.fw)/tb.az,r=1/Math.sqrt(x*x+z*z+1e-9);
       const S=C.clone().addScaledVector(nd,r),v=S.clone().sub(sh);let F=v.addScaledVector(nd,-v.dot(nd));F.addScaledVector(t.d,-F.dot(t.d)*.75).normalize();
       const W=S.clone().addScaledVector(nd,D.palmT).addScaledVector(F,-D.palmC);
       const b0=elbowFor(rig,o.side,W,o.pole,true);let mi=1e9;
       for(let th=-1.2;th<=1.201;th+=.4){const e=elbowFor(rig,o.side,W,o.pole.clone().applyAxisAngle(b0.dirL,th),true);mi=Math.min(mi,intrusion(tb,e.sh,e.el,.03*D.H)+intrusion(tb,e.el,W,.026*D.H)+armClash(segs,e.sh,e.el,.03*D.H)+armClash(segs,e.el,W,.026*D.H)+Math.abs(th)*.02);}
-      const c=mi+Math.abs(dl)*.12;if(!best||c<best.c)best={c,dl};}
+      const c=mi+Math.abs(dl)*.45;if(!best||c<best.c)best={c,dl};}
     o._dl=o._dl==null?best.dl:o._dl+(best.dl-o._dl)*.3;n.applyAxisAngle(t.d,o._dl);}
   _rc.set(C.clone().addScaledVector(n,.6),n.clone().negate());_rc.far=.6;
   const hits=_rc.intersectObjects(partMeshes(t.rig,t.parts),false);const S=hits.length?hits[0].point:T0.clone();
   if(hits.length){const m=S.clone().sub(C);m.addScaledVector(t.d,-m.dot(t.d));if(m.lengthSq()>1e-8)n=m.normalize();}
   const sh=wpos(rig.J['sh'+o.side]),v=S.clone().sub(sh);let F=v.addScaledVector(n,-v.dot(n));if(F.lengthSq()<1e-8)F=t.d.clone();F.normalize();
+  if(o.slide){// in un abbraccio le dita puntano verso la colonna dell'altro e si chiudono attorno al suo corpo
+    const pt=partnerOf(ch),bk=new THREE.Vector3(0,0,-1).applyQuaternion(pt.rig.J.spine.getWorldQuaternion(new THREE.Quaternion())),Bc=C.clone().addScaledVector(bk,pt.rig.D.depth);
+    const tin=Bc.sub(S);tin.addScaledVector(n,-tin.dot(n));if(tin.lengthSq()>.0004&&tin.dot(F)>-.2)F.copy(tin.normalize());}
   // dita quasi orizzontali attorno al corpo (come una mano vera sulla schiena o sui fianchi)
   F.addScaledVector(t.d,-F.dot(t.d)*(o.flat==null?.75:o.flat));F.addScaledVector(n,-F.dot(n));if(F.lengthSq()<1e-8)F=t.d.clone();F.normalize();
   const Yh=F.clone().negate(),Zh=n.clone(),Xh=new THREE.Vector3().crossVectors(Yh,Zh);
   const Q=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(Xh,Yh,Zh));
-  const Pc=S.clone().addScaledVector(n,D.palmT+.0025),W=Pc.clone().add(new THREE.Vector3(0,D.palmC,0).applyQuaternion(Q));
+  const Pc=S.clone().addScaledVector(n,D.palmT+(o.slide?.012:.0025)),W=Pc.clone().add(new THREE.Vector3(0,D.palmC,0).applyQuaternion(Q));
   const R=S.clone().sub(C).length();o._t={Q,W,C,d:t.d,R};return W;}
 // mano nella mano: palmo contro palmo, dita che si incrociano e si chiudono sulla mano dell'altro
 function holdPrep(ch,o){const M=o.target(),pt=partnerOf(ch),D=ch.rig.D,n=wpos(pt.root).sub(wpos(ch.root)).setY(0).normalize(),fw=fwdOf(ch);
@@ -2785,7 +2789,7 @@ function touchPost(ch,dt){const T=ch._T;if(!T)return;const J=ch.rig.J;T.ik.forEa
   if(o.hold&&o._h){const wr=J['wr'+o.side];ch.root.updateMatrixWorld(true);wr.parent.getWorldQuaternion(_mq);wr.quaternion.slerp(_mq.invert().multiply(o._h.Q),1-Math.exp(-dt*10));handCurl(ch.rig,o.side,.55,.35,1-Math.exp(-dt*10));return;}
   if(!o.touch||!o._t)return;const k=1-Math.exp(-dt*8);
   ch.root.updateMatrixWorld(true);const wr=J['wr'+o.side];wr.parent.getWorldQuaternion(_mq);wr.quaternion.slerp(_mq.invert().multiply(o._t.Q),k);
-  ch.root.updateMatrixWorld(true);wrapFingers(ch.rig,o.side,o._t.C,o._t.d,o.curlFrac==null?1:o.curlFrac,1-Math.exp(-dt*12),.9,o._t.R*(o.armTouch?1:1.9));});}
+  ch.root.updateMatrixWorld(true);fingersTogether(ch.rig,o.side,o.slide?.85:.5);wrapFingers(ch.rig,o.side,o._t.C,o._t.d,o.curlFrac==null?1:o.curlFrac,1-Math.exp(-dt*12),.9,o._t.R*(o.armTouch?1:o.slide?1.0:1.9));});}
 // prima dell'IK: calcola dove sta la tazza e dove vanno le mani
 function mugPrep(ch,dt){const g=ch._mg;if(!g)return;const t=mugPoseNow(ch),o=MUGOBJ[ch.base];
   if(g.where==='home'){t.yaw=o.homeRot;}
@@ -2798,7 +2802,7 @@ function mugPrep(ch,dt){const g=ch._mg;if(!g)return;const t=mugPoseNow(ch),o=MUG
 function mugPost(ch,dt){const g=ch._mg,J=ch.rig.J;
   // mani libere: dita appena piegate, come una mano rilassata (o la piega chiesta dalla posa)
   const touching=new Set((ch._T?ch._T.ik:[]).filter(o=>o.touch||o.hold).map(o=>o.side));
-  ['L','R'].forEach(sd=>{if(g&&g.hands.includes(sd)||touching.has(sd))return;thumbPose(ch.rig,sd,0);const pc=ch._T&&ch._T.curl;handCurl(ch.rig,sd,pc&&pc[sd]!=null?pc[sd]:.3,pc&&pc['t'+sd]!=null?pc['t'+sd]:.25,1-Math.exp(-dt*12));});
+  ['L','R'].forEach(sd=>{if(g&&g.hands.includes(sd)||touching.has(sd))return;thumbPose(ch.rig,sd,0);fingersTogether(ch.rig,sd,0);const pc=ch._T&&ch._T.curl;handCurl(ch.rig,sd,pc&&pc[sd]!=null?pc[sd]:.3,pc&&pc['t'+sd]!=null?pc['t'+sd]:.25,1-Math.exp(-dt*12));});
   if(!g)return;ch.root.updateMatrixWorld(true);
   g.hands.forEach(sd=>{const wr=J['wr'+sd],G=ch._grip[sd];wr.parent.getWorldQuaternion(_mq);const q=_mq.invert().multiply(G.Q);wr.quaternion.slerp(q,g.k);});
   ch.root.updateMatrixWorld(true);
@@ -2889,7 +2893,7 @@ function computeActs(lp){
   near(MUSIC.x,MUSIC.z,1.5,'music','Metti un disco',-.3);
   near(catW.x,catW.z,1.15,'cat','Accarezza il gatto',-.1);
   if(!mugBusy){const md=Math.hypot(lp.x-MUGS.x,lp.z-MUGS.z)-.35;
-    if(holding){objs.push({d:-1,a:sipAct});if(mugNear)objs.push({d:md,a:{id:'mugdown',label:'Posa la tazza'}});}
+    if(holding){objs.push({d:-1,a:sipAct});if(mugNear)out.unshift({id:'mugdown',label:'Posa la tazza'});}
     else if(mugNear)objs.push({d:md,a:{id:'mug',label:'Prendi la tua tazza'}});}
   near(SWITCH.x,SWITCH.z,1.0,'luci',room.luci?'Spegni le luci':'Accendi le luci',-.2);
   near(0,-3.1,1.5,'camino',room.camino?'Spegni il camino':'Accendi il camino',.05);
