@@ -2450,7 +2450,7 @@ function extrasOff(){if(call)endLocal();hideIncoming();closePanel();if(chatOpen)
 const SOFA={x:0,z:-2.25,seat:.44,slots:[-.2,.2]};
 // posa abbracciati sul divano: valori scelti con il controllo automatico delle compenetrazioni
 const POSE_P={"hug":{"d":-0.012,"lat":0.049,"L":{"sp":0.022,"nx":0.337,"hx":0.159,"hy":0.126,"hz":0.02,"uL":0.12,"uR":0.12,"back":0.039,"lat":0.134,"px":0.905,"py":-0.08,"pz":0.455},"F":{"sp":0.007,"nx":0.003,"hx":-0.03,"hy":0.113,"hz":-0.013,"uL":0.159,"uR":0.031,"back":0.092,"lat":0.098,"px":0.996,"py":0.003,"pz":-0.086}},"kiss":{"dd":-0.01,"Lhy":0.295,"Fhy":0.122,"Lhx":-0.22,"Fhx":-0.235,"Flift":0,"Lsp":-0.034,"Lhz":-0.037,"Fsp":-0.038,"Fhz":-0.326,"Lw":0.087,"Lwa":0.046,"Lb":0.054,"Lu":0.089,"Fu":0.074,"Ff":0.027,"Fl":-0.051,"Lpy":0.168,"Fpy":0.063},"dance":{"d":0.102,"Lsp":0.028,"Lnx":0.325,"Lhx":0.085,"Lhy":0.658,"Lhz":0.122,"Fsp":0.115,"Fnx":-0.008,"Fhx":-0.102,"Fhy":0.725,"Fhz":0.132,"Lw":0.11,"Lwa":0.009,"Lb":0.003,"Lu":0.15,"Fu":0.081,"Fb":0.056,"Fl":-0.035,"Fpz":-0.799}};
-const SOFA_P={"gap":0.334,"lA":-0.061,"fA":0.16,"fYaw":-0.08,"fSy":0.594,"hf":0.122,"hc":-0.05,"hu":-0.08,"fNx":-0.198,"fNeck":0.399,"fHx":-0.055,"fHy":0.04,"fHz":0.5,"lSp":-0.067,"lSy":-0.06,"lRoll":-0.031,"lNx":0.189,"lNz":0.282,"lHx":0.222,"lHy":0.088,"lHz":0.402,"tA":0.256,"tBack":0.06,"pX":-0.163,"pY":0.155,"pZ":-0.489,"cX":0.051,"cU":0.115,"cF":0.016,"fpX":-1,"fpY":0.07,"fpZ":0.326,"fZ":0.133};
+const SOFA_P={"gap":0.436,"lA":-0.101,"fA":-0.006,"fYaw":0.285,"fSy":0.431,"hf":0.127,"hc":-0.049,"hu":-0.063,"fNx":0.162,"fNeck":0.525,"fHx":-0.099,"fHy":-0.107,"fHz":0.55,"lSp":-0.15,"lSy":-0.036,"lRoll":0.071,"lNx":0.294,"lNz":0.35,"lHx":0.114,"lHy":-0.186,"lHz":0.5,"tA":0.147,"tBack":0.069,"pX":-0.111,"pY":-0.372,"pZ":-0.658,"cX":0.07,"cU":0.135,"cF":-0.02,"fpX":-1,"fpY":0.07,"fpZ":0.326,"fZ":0.017,"eF":0.04,"eX":0.15,"eU":0.119,"sx":0.318,"sy":0.211,"sz":0.023};
 const BEDS=[BED.z-.4,BED.z+.4];
 const POSE_DUR={hug:5.5,kiss:3.6,wave:2.8,pet:4.2};
 const hand={on:false,guide:null};
@@ -2535,18 +2535,21 @@ function poseTarget(ch,t){
             return q.addScaledVector(out,.06).addScaledVector(bk,C.tBack);}});
         }else{
           T.hips=E(0,s*C.fYaw,0);T.neck=E(C.fNx,0,-s*C.fNeck);T.head=E(C.fHx,s*C.fHy,-s*C.fHz);
-          // il busto di lei si piega verso di lui finché la testa arriva sulla sua spalla
-          {const J=ch.rig.J,a0=wpos(pt.rig.J.shL),b0=wpos(pt.rig.J.shR),me0=wpos(ch.root),near=a0.distanceTo(me0)<b0.distanceTo(me0)?a0:b0;
-            const inward=wpos(pt.rig.J.spine).sub(near).setY(0).normalize(),PH=pt.rig.D.H;
-            // quando lui beve, lei sposta un po' la testa per lasciargli spazio
-            const su=pt._mg?pt._mg.u:0;
-            const Ht=near.clone().addScaledVector(fwdOf(pt),C.hf*PH).addScaledVector(inward,C.hc*PH).add(new THREE.Vector3(0,(C.hu-.02*su)*PH,0));
-            const d=J.hips.worldToLocal(Ht).sub(J.spine.position).normalize();
-            const r0=J.neck.position.clone().add(J.head.position).add(new THREE.Vector3(0,D.R,0)).normalize();
-            const q=new THREE.Quaternion().setFromUnitVectors(r0,d).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),s*C.fSy));
+          // il busto di lei si piega verso di lui finché la sua spalla si infila sotto quella di lui, accanto al suo fianco
+          // (la testa poi si appoggia sul petto di lui piegando il collo)
+          {const J=ch.rig.J,f0=fwdOf(pt),l0=leftOf(pt),me0=wpos(ch.root),PH=pt.rig.D.H;
+            const tow=l0.clone().multiplyScalar(-(Math.sign(wpos(pt.root).sub(me0).dot(l0))||1));
+            const St=wpos(pt.rig.J.spine).addScaledVector(tow,C.sx).addScaledVector(f0,C.sz).add(new THREE.Vector3(0,C.sy,0));
+            const d=J.hips.worldToLocal(St).sub(J.spine.position).normalize();
+            const qY=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),s*C.fSy),r0=J['sh'+n].position.clone().applyQuaternion(qY).normalize();
+            const q=new THREE.Quaternion().setFromUnitVectors(r0,d).multiply(qY);
             const e=new THREE.Euler().setFromQuaternion(q);T.spine=E(e.x,e.y,e.z);}
           // lei: l'avambraccio passa sul petto di lui e la mano si appoggia dall'altra parte
-          ik.push({side:n,touch:onTorso(pt),pole:new THREE.Vector3(s*C.fpX,C.fpY,C.fpZ),target:()=>{const sp=wpos(pt.rig.J.spine),f=fwdOf(pt),l=leftOf(pt),me0=wpos(ch.root);
+          // il gomito sta davanti al petto di lui, dalla parte di lei: così il braccio è piegato e l'avambraccio lo abbraccia
+          ik.push({side:n,touch:onTorso(pt),elbowAt:()=>{const sp=wpos(pt.rig.J.spine),f=fwdOf(pt),l=leftOf(pt),me0=wpos(ch.root);
+              const toward=l.clone().multiplyScalar(-(Math.sign(wpos(pt.root).sub(me0).dot(l))||1));
+              return sp.add(f.multiplyScalar(pt.rig.D.depth+C.eF)).add(toward.multiplyScalar(C.eX)).add(new THREE.Vector3(0,C.eU*pt.rig.D.H,0));},
+            pole:new THREE.Vector3(s*C.fpX,C.fpY,C.fpZ),target:()=>{const sp=wpos(pt.rig.J.spine),f=fwdOf(pt),l=leftOf(pt),me0=wpos(ch.root);
             const away=l.clone().multiplyScalar(Math.sign(wpos(pt.root).sub(me0).dot(l))||1);
             const su=pt._mg?pt._mg.u:0;// quando lui beve, la mano di lei scende un po' sul petto per lasciare passare il suo braccio
             return sp.add(f.multiplyScalar(pt.rig.D.depth+C.cF)).add(away.multiplyScalar(C.cX*(1-.6*su))).add(new THREE.Vector3(0,(C.cU-.09*su)*pt.rig.D.H,0));}});}}}
@@ -2606,9 +2609,9 @@ function elbowFor(rig,side,target,pole,toWrist){const sh=rig.J['sh'+side],T=rig.
   const up=dir.clone().multiplyScalar(Math.cos(A)).add(perp.multiplyScalar(Math.sin(A))).normalize();
   return{el:rig.J.spine.localToWorld(sh.position.clone().addScaledVector(up,L1)),sh:rig.J.spine.localToWorld(sh.position.clone()),dirL:dir};}
 function bestPole(ch,o,W,toWrist){const pt=partnerOf(ch),rig=ch.rig;if(!pt.rig)return o.pole;const tb=torsoBox(pt),D=rig.D,rA=.03*D.H,rF=.026*D.H,segs=armSegs(pt);
-  const base=elbowFor(rig,o.side,W,o.pole,toWrist),axis=base.dirL;let best=null;
-  for(let th=-1.4;th<=1.401;th+=.2){const pl=o.pole.clone().applyAxisAngle(axis,th),e=elbowFor(rig,o.side,W,pl,toWrist);
-    const c=intrusion(tb,e.sh,e.el,rA)+intrusion(tb,e.el,W,rF)+armClash(segs,e.sh,e.el,rA)+armClash(segs,e.el,W,rF)+Math.abs(th)*.02;if(!best||c<best.c)best={c,th};}
+  const base=elbowFor(rig,o.side,W,o.pole,toWrist),axis=base.dirL,EA=o.elbowAt?o.elbowAt():null;let best=null;
+  for(let th=-3.1;th<=3.101;th+=.2){if(!EA&&Math.abs(th)>1.41)continue;const pl=o.pole.clone().applyAxisAngle(axis,th),e=elbowFor(rig,o.side,W,pl,toWrist);
+    const c=intrusion(tb,e.sh,e.el,rA)+intrusion(tb,e.el,W,rF)+armClash(segs,e.sh,e.el,rA)+armClash(segs,e.el,W,rF)+Math.abs(th)*.02+(EA?e.el.distanceTo(EA)*12:0);if(!best||c<best.c)best={c,th};}
   o._sw=o._sw==null?best.th:o._sw+(best.th-o._sw)*.35;return o.pole.clone().applyAxisAngle(axis,o._sw);}
 function solveArm(rig,side,target,pole,k,toWrist){
   const sh=rig.J['sh'+side],el=rig.J['el'+side];
